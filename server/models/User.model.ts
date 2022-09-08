@@ -8,6 +8,7 @@ const userSchema = new Schema({
     minLength: 3,
     maxLength: 16,
     validate: validateUsername,
+    unique: true,
   },
   password: { type: String, required: true },
   avatar: { type: String },
