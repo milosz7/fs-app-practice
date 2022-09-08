@@ -7,4 +7,6 @@ declare global {
   }
 }
 
+export type NextError = (err?: { status: number, message: string }) => void;
+
 export {};
