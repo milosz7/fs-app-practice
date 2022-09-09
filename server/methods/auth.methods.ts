@@ -50,9 +50,31 @@ const authMethods = {
       return next({ status: 500, message: 'Internal server error.' });
     }
   },
-  getUser: () => {
-    console.log('Im logged in')
-  }
+  logout: (req: Request, res: Response, next: NextError) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return next({ status: 500, message: 'Failed to log out.' });
+      }
+      return res.status(200).json({message: 'You have been logged out.'})
+    });
+  },
+  getUser: async (req: Request, res: Response, next: NextError) => {
+    try {
+      const userId = req.session.id;
+      const userData = await User.findById(userId);
+      if (userData) {
+        const trimmedUserData = {
+          username: userData.username,
+          avatar: userData.avatar,
+          phone: userData.phone,
+        }
+        return res.json(trimmedUserData);
+      }
+      return next();
+    } catch {
+      return next({status: 500, message: 'Internal server error'});
+    }
+  },
 };
 
 export default authMethods;
