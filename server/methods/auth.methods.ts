@@ -40,13 +40,15 @@ const authMethods = {
           id: userData._id,
         };
         req.session.user = userInfo;
-        if (checkPassword) return res.status(200).json({ message: 'Authorization successful!'});
-        return next({
-          status: 401,
-          message: 'Provided password and username combination is incorrect!',
-        });
+        if (checkPassword) return res.status(200).json({ message: 'Authorization successful!' });
       }
-    } catch {}
+      return next({
+        status: 401,
+        message: 'Provided password and username combination is incorrect!',
+      });
+    } catch {
+      return next({ status: 500, message: 'Internal server error.' });
+    }
   },
 };
 
