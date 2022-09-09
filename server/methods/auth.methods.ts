@@ -5,22 +5,28 @@ import User from '../models/User.model';
 import { NextError } from '../../types/declaration';
 import { declareImageFileType } from '../utils/fileFilter';
 import { deleteFile } from '../utils/deleteFile';
-import { createPhoneRegex } from '../utils/createPhoneRegex';;
+import { createPhoneRegex } from '../utils/createPhoneRegex';
 
 const authMethods = {
   register: async (req: Request, res: Response, next: NextError) => {
     try {
-      const fileType = req.file ? await declareImageFileType(req.file) : undefined;
+      const fileType = req.file ? await declareImageFileType(req.file) : 'unknown';
       const { username, password, phone }: { username?: string; password?: string; phone: string } =
         req.body;
       if ((password && !validatePassword(password)) || !username || !phone || !password) {
         return next({ status: 400, message: 'Bad request.' });
       }
       const isUsernameTaken = await User.findOne({ username: { $eq: username } });
-      if (isUsernameTaken) return next({ status: 409, message: 'Username is already taken.' });
+      if (isUsernameTaken) {
+        if (req.file) deleteFile(req.file.path);
+        return next({ status: 409, message: 'Username is already taken.' });
+      }
 
-      const isNumberTaken = await User.findOne({phone: {$regex: createPhoneRegex(phone)} })
-      if (isNumberTaken) return next({ status: 409, message: 'Passed phone number is already being used.' });
+      const isNumberTaken = await User.findOne({ phone: { $regex: createPhoneRegex(phone) } });
+      if (isNumberTaken) {
+        if (req.file) deleteFile(req.file.path);
+        return next({ status: 409, message: 'Passed phone number is already being used.' });
+      }
 
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({
@@ -29,7 +35,7 @@ const authMethods = {
         phone,
       });
       if (fileType === 'unknown') deleteFile(req.file!.path);
-      if (fileType && fileType !== 'unknown') {
+      if (fileType !== 'unknown') {
         const relativeFilePath = req.file!.path.split('public')[1];
         newUser.avatar = relativeFilePath;
       }
