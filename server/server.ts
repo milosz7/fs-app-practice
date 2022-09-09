@@ -31,7 +31,7 @@ app.use(
 );
 
 if (process.env.NODE_ENV === 'development') {
-  app.use(cors({ origin: 'http://localhost:3000' }));
+  app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 }
 
 app.use('/auth', authRoutes);
