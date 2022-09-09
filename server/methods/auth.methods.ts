@@ -12,7 +12,7 @@ const authMethods = {
       if ((password && !validatePassword(password)) || !username || !phone || !password) {
         return next({ status: 400, message: 'Bad request.' });
       }
-      const isUsernameTaken = await User.findOne({ username: username });
+      const isUsernameTaken = await User.findOne({ username: { $eq: username } });
       if (isUsernameTaken) return next({ status: 409, message: 'Username is already taken.' });
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({
@@ -22,9 +22,31 @@ const authMethods = {
       });
       await newUser.save();
       return res.status(200).json({ message: 'Success!' });
-    } catch (e) {
+    } catch {
       return next({ status: 500, message: 'Internal server error.' });
     }
+  },
+  login: async (req: Request, res: Response, next: NextError) => {
+    try {
+      const { username, password }: { username?: string; password?: string } = req.body;
+      if (!password || !username) {
+        return next({ status: 400, message: 'Please provide both password and username.' });
+      }
+      const userData = await User.findOne({ username: { $eq: username } });
+      if (userData) {
+        const checkPassword = await bcrypt.compare(password, userData.password);
+        const userInfo = {
+          username: userData.username,
+          id: userData._id,
+        };
+        req.session.user = userInfo;
+        if (checkPassword) return res.status(200).json({ message: 'Authorization successful!'});
+        return next({
+          status: 401,
+          message: 'Provided password and username combination is incorrect!',
+        });
+      }
+    } catch {}
   },
 };
 
