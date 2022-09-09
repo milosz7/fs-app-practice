@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { validatePassword } from '../../utils/helpers';
+import { validatePassword } from '../utils/helpers';
 import User from '../models/User.model';
 import { NextError } from '../../types/declaration';
 
@@ -50,6 +50,9 @@ const authMethods = {
       return next({ status: 500, message: 'Internal server error.' });
     }
   },
+  getUser: () => {
+    console.log('Im logged in')
+  }
 };
 
 export default authMethods;
