@@ -11,8 +11,8 @@ const userSchema = new Schema({
     unique: true,
   },
   password: { type: String, required: true },
-  avatar: { type: String },
-  phone: { type: String, validate: validatePhoneNumber },
+  avatar: { type: String, default: '/default-avatar.jpg' },
+  phone: { type: String, validate: validatePhoneNumber, unique: true },
 });
 
 interface UserModel {
