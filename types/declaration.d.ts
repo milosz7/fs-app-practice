@@ -8,16 +8,6 @@ declare global {
       SESSION_SECRET: string | string[];
     }
   }
-  namespace Express {
-    interface Request {
-      session: {
-        user: {
-          username: string,
-          id: mongoose.Types.ObjectId
-        }
-      }
-    }
-  }
 }
 
 export type NextError = (err?: { status: number, message: string }) => void;
