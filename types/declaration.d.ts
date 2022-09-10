@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 declare global {
   namespace NodeJS {
@@ -11,5 +11,12 @@ declare global {
 }
 
 export type NextError = (err?: { status: number, message: string }) => void;
+
+export interface newAdData {
+  title?: string;
+  description?: string;
+  price?: number;
+  location?: string;
+}
 
 export {};
