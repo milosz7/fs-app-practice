@@ -15,7 +15,7 @@ interface AdModel {
   title: string;
   description: string;
   published: string;
-  image?: string;
+  image: string;
   price: number;
   location: string;
   seller: Types.ObjectId;
