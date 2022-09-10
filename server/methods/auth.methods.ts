@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { validatePassword } from '../utils/helpers';
+import { validatePassword } from '../utils/validators';
 import User from '../models/User.model';
 import { NextError } from '../../types/declaration';
 import { declareImageFileType } from '../utils/fileFilter';
@@ -42,6 +42,7 @@ const authMethods = {
       await newUser.save();
       return res.status(200).json({ message: 'Success!' });
     } catch {
+      if (req.file) deleteFile(req.file.path);
       return next({ status: 500, message: 'Internal server error.' });
     }
   },
@@ -89,7 +90,7 @@ const authMethods = {
         };
         return res.json(trimmedUserData);
       }
-      return next();
+      return next({ status: 404, message: 'User data not found.'});
     } catch {
       return next({ status: 500, message: 'Internal server error' });
     }
