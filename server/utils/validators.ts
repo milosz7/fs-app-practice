@@ -10,6 +10,15 @@ export const validatePhoneNumber = (number: string) => {
 };
 
 export const validatePassword = (password: string) => {
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$/;
-  return passwordRegex.test(password);
-}
+  const passwordRegexp = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$/;
+  return passwordRegexp.test(password);
+};
+
+export const validateTitle = (title: string) => {
+  const titleRegexp = /[A-Za-z0-9-_:.\s]{10,50}/;
+  const titleMatch = title.match(titleRegexp);
+  if (titleMatch) {
+    return titleMatch.join('').length === title.length;
+  }
+  return false;
+};
