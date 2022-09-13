@@ -1,16 +1,19 @@
 import express from 'express';
-import authMethods from '../methods/auth.methods';
 import { isLoggedIn } from '../middlewares/authentication-middleware';
 import { upload } from '../middlewares/upload';
+import register from '../controllers/auth/register';
+import login from '../controllers/auth/login';
+import logout from '../controllers/auth/logout';
+import getUser from '../controllers/auth/getUser';
 
 const router = express.Router();
 
-router.route('/register').post(upload.single('avatar'), authMethods.register);
+router.route('/register').post(upload.single('avatar'), register);
 
-router.route('/login').post(authMethods.login);
+router.route('/login').post(login);
 
-router.route('/logout').delete(isLoggedIn, authMethods.logout)
+router.route('/logout').delete(isLoggedIn, logout);
 
-router.route('/user').get(isLoggedIn, authMethods.getUser);
+router.route('/user').get(isLoggedIn, getUser);
 
 export default router;
