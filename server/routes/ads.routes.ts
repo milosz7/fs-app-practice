@@ -1,7 +1,7 @@
 import express from 'express';
 import adsMethods from '../methods/ads.methods';
-import { upload } from '../utils/upload';
-import { isLoggedIn } from '../utils/authentication-middleware';
+import { upload } from '../middlewares/upload';
+import { isLoggedIn } from '../middlewares/authentication-middleware';
 
 const router = express.Router();
 

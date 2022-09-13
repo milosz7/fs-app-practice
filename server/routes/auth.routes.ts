@@ -1,7 +1,7 @@
 import express from 'express';
 import authMethods from '../methods/auth.methods';
-import { isLoggedIn } from '../utils/authentication-middleware';
-import { upload } from '../utils/upload';
+import { isLoggedIn } from '../middlewares/authentication-middleware';
+import { upload } from '../middlewares/upload';
 
 const router = express.Router();
 
