@@ -9,14 +9,3 @@ declare global {
     }
   }
 }
-
-export type NextError = (err?: { status: number, message: string }) => void;
-
-export interface passedAdData {
-  title: string;
-  description: string;
-  price: string;
-  location: string;
-}
-
-export {};

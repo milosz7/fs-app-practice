@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../../types/declaration';
+import { NextError } from '../../../interfaces/NextError';
 import { declareImageFileType } from '../../utils/fileFilter';
 import { validatePassword } from '../../utils/validators';
 import { deleteFile } from '../../utils/deleteFile';

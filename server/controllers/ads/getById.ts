@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../../types/declaration';
+import { NextError } from '../../../interfaces/NextError';
 import Ad from '../../models/Ad.model';
 
 const getById = async (req: Request, res: Response, next: NextError) => {
