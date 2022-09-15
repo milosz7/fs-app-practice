@@ -12,6 +12,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SideMenu from './SideMenu';
 import SearchBar from './SearchBar';
+import Container from '@mui/material/Container';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,41 +26,43 @@ const Navigation = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="sticky">
-        <Toolbar>
-          <IconButton
-            onClick={() => setIsOpen(!isOpen)}
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, display: { sm: 'block', md: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            Marketplace
-          </Typography>
-          <SearchBar />
-          <Box sx={{ display: { xs: 'none', md: 'block' }, ml: 2 }}>
-            {navigationElements.map(({ text, path, icon }) => (
-              <Button color="inherit" component={RouterLink} to={path} startIcon={icon}>
-                {text}
-              </Button>
-            ))}
-            <Button
-              startIcon={<AccountCircleIcon />}
-              component={RouterLink}
-              to={user ? '/logout' : '/login'}
+        <Container>
+          <Toolbar>
+            <IconButton
+              onClick={() => setIsOpen(!isOpen)}
+              size="large"
+              edge="start"
               color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2, display: { sm: 'block', md: 'none' } }}
             >
-              {user ? 'logout' : 'login'}
-            </Button>
-          </Box>
-        </Toolbar>
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            >
+              Marketplace
+            </Typography>
+            <SearchBar />
+            <Box sx={{ display: { xs: 'none', md: 'block' }, ml: 2 }}>
+              {navigationElements.map(({ text, path, icon }) => (
+                <Button color="inherit" component={RouterLink} to={path} startIcon={icon}>
+                  {text}
+                </Button>
+              ))}
+              <Button
+                startIcon={<AccountCircleIcon />}
+                component={RouterLink}
+                to={user ? '/logout' : '/login'}
+                color="inherit"
+              >
+                {user ? 'logout' : 'login'}
+              </Button>
+            </Box>
+          </Toolbar>
+        </Container>
         <SideMenu setIsOpen={setIsOpen} isOpen={isOpen} elements={navigationElements} />
       </AppBar>
     </Box>
