@@ -23,7 +23,7 @@ const AdCard = ({
   const imagePath = declareImgPath(image);
 
   return (
-    <Card>
+    <Card sx={{height: '100%', display: 'flex', flexFlow: 'column nowrap', alignItems: 'flex-start'}}>
       <CardMedia
         height={300}
         component="img"
@@ -38,7 +38,7 @@ const AdCard = ({
           {location}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{mt: 'auto'}}>
         <Button component={RouterLink} to={'ad/' + id} color="primary" variant="text">
           Details
         </Button>
