@@ -1,4 +1,7 @@
+import mongoose from 'mongoose';
+
 export interface AdData {
+  _id: mongoose.Types.ObjectId;
   title: string;
   description: string;
   published: string;
@@ -12,5 +15,5 @@ export interface AdsContextInterface {
   ads: AdData[];
   removeAd: (id: string) => void;
   addNewAd: (data: AdData) => void;
-  editAd: (id: string) => void;
+  editAd: (id: string, data: AdData) => void;
 }
