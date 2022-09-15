@@ -48,7 +48,13 @@ const Navigation = () => {
             <SearchBar />
             <Box sx={{ display: { xs: 'none', md: 'block' }, ml: 2 }}>
               {navigationElements.map(({ text, path, icon }) => (
-                <Button color="inherit" component={RouterLink} to={path} startIcon={icon}>
+                <Button
+                  key={text as string}
+                  color="inherit"
+                  component={RouterLink}
+                  to={path}
+                  startIcon={icon}
+                >
                   {text}
                 </Button>
               ))}
