@@ -8,13 +8,13 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
-import Home from './Components/Pages/Home/Home';
-import Login from './Components/Pages/Login/Login';
-import Edit from './Components/Pages/Edit/Edit';
-import Ad from './Components/Pages/Ad/Ad';
-import Add from './Components/Pages/Add/Add';
-import Register from './Components/Pages/Register/Register';
-import NotFound from './Components/Pages/NotFound/NotFound';
+import Home from './Components/Pages/Home';
+import Login from './Components/Pages/Login';
+import Edit from './Components/Pages/Edit';
+import Ad from './Components/Pages/Ad';
+import Add from './Components/Pages/Add';
+import Register from './Components/Pages/Register';
+import NotFound from './Components/Pages/NotFound';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
