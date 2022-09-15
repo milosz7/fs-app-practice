@@ -6,7 +6,7 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Link as RouterLink} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -19,7 +19,7 @@ const SideMenu = ({elements, isOpen, setIsOpen}: {elements: {text: string, path:
   return (
     <Drawer anchor="left" open={isOpen} onClose={() => setIsOpen(false)}>
       <Box sx={{p: 2, display: 'flex', alignItems: 'center'}}>
-        <ShoppingBasketIcon sx={{mr: 3, color: 'rgba(0, 0, 0, 0.54)'}} fontSize="medium" />
+        <ShoppingBasketIcon sx={{mr: 3, color: 'action.active'}} fontSize="medium" />
       <Typography sx={{ display: 'inline-block'}}
         variant="h6"
       >
