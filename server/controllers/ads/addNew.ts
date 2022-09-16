@@ -27,8 +27,11 @@ const addNew = async (req: Request, res: Response, next: NextError) => {
     }
     if (req.file) deleteFile(req.file.path);
     return next({ status: 400, message: 'Bad request.' });
-  } catch {
+  } catch (e) {
     if (req.file) deleteFile(req.file.path);
+    if (e instanceof Error && e.name === 'ValidationError') {
+      return next({ status: 500, message: 'Provided data is invalid.' });
+    }
     return next({ status: 500, message: 'Internal server error.' });
   }
 };

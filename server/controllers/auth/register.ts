@@ -6,18 +6,16 @@ import { deleteFile } from '../../utils/deleteFile';
 import User from '../../models/User.model';
 import bcrypt from 'bcrypt';
 import { createPhoneRegex } from '../../utils/createPhoneRegex';
+import { MongooseError } from 'mongoose';
 
 const register = async (req: Request, res: Response, next: NextError) => {
   try {
     const fileType = req.file ? await declareImageFileType(req.file) : 'unknown';
     const { username, password, phone }: { username?: string; password?: string; phone: string } =
       req.body;
-      console.log(req.body)
+    console.log(req.body);
     if (!username || !phone || !password) {
       return next({ status: 400, message: 'Please provide all necessary data!' });
-    }
-    if (password && !validatePassword(password)) {
-      return next({status: 400, message: 'You have to match password requirements.'})
     }
     const isUsernameTaken = await User.findOne({ username: { $eq: username } });
     if (isUsernameTaken) {
@@ -43,9 +41,13 @@ const register = async (req: Request, res: Response, next: NextError) => {
       newUser.avatar = relativeFilePath;
     }
     await newUser.save();
-    return res.status(200).json({ message: 'Registration succesfull! You can log in to your account.' });
-  } catch {
+    return res
+      .status(200)
+      .json({ message: 'Registration succesfull! You can log in to your account.' });
+  } catch (e: unknown) {
     if (req.file) deleteFile(req.file.path);
+    if (e instanceof Error && e.name === 'ValidationError')
+      return next({ status: 500, message: 'Provided data is invalid.' });
     return next({ status: 500, message: 'Internal server error.' });
   }
 };
