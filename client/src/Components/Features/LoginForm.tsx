@@ -7,18 +7,47 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import FormBase from '../Common/FormBase';
+import React, { useState, useId } from 'react';
 
 const LoginForm = () => {
+  const [loginData, setLoginData] = useState({
+    username: '',
+    password: '',
+  });
+
+  const updateForm = (field: keyof typeof loginData, value: string) => {
+    setLoginData({ ...loginData, [field]: value });
+  };
+
+  const submit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    alert('test');
+  };
+
   return (
-    <Box width="max-content" textAlign="center">
-      <FormBase title="Enter account data:" buttonText="log in">
+    <Box width="min(350px, calc(100vw - 30px))" textAlign="center">
+      <FormBase onSubmit={submit} title="Enter account data:" buttonText="log in">
         <Box mb={1} sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <AccountCircleIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
-          <TextField autoComplete="off" id="username" label="Username" variant="standard" />
+          <TextField
+            value={loginData.username}
+            onChange={(e) => updateForm('username', e.target.value)}
+            autoComplete="off"
+            id={useId()}
+            label="Username"
+            variant="standard"
+          />
         </Box>
         <Box mb={1} sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <LockPersonIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
-          <TextField id="password" label="Password" variant="standard" type="password" />
+          <TextField
+            value={loginData.password}
+            onChange={(e) => updateForm('password', e.target.value)}
+            id={useId()}
+            label="Password"
+            variant="standard"
+            type="password"
+          />
         </Box>
       </FormBase>
       <Paper
@@ -29,6 +58,7 @@ const LoginForm = () => {
           display: 'flex',
           alignItems: 'center',
           flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: 'center'
         }}
       >
         <Typography variant="body1">You don't have an account?</Typography>
