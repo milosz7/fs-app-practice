@@ -17,7 +17,7 @@ const login = async (req: Request, res: Response, next: NextError) => {
         id: userData._id,
       };
       req.session.user = userInfo;
-      if (checkPassword) return res.status(200).json({ message: 'Authorization successful!' });
+      if (checkPassword) return res.status(200).json({ user: userInfo });
     }
     return next({
       status: 401,
