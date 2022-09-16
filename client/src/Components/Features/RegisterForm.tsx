@@ -21,17 +21,31 @@ const RegisterForm = () => {
     username: '',
     password: '',
     email: '',
-    phone: ''
+    phone: '',
   });
 
   const updateForm = (field: keyof typeof registerData, value: string) => {
     setRegisterData({ ...registerData, [field]: value });
   };
 
+  // const register = async (newUser: {
+  //   username: string;
+  //   password: string;
+  //   phone: string;
+  //   file?: File;
+  // }) => {
+  //   const response = await fetch('/auth/register', {
+  //     method: 'POST',
+  //     body: JSON.stringify(newUser),
+  //   });
+  //   const { message }: { message: string } = await response.json();
+  //   return message
+  // };
+
   return (
     <Box width="min(350px, calc(100vw - 30px))" textAlign="center" p={3}>
-      <FormBase onSubmit={submit} title="Create an account:" buttonText="sign up">
-        <Box mb={1} sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
+      <FormBase error="" onSubmit={submit} title="Create an account:" buttonText="sign up">
+        <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <AccountCircleIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
             value={registerData.username}
@@ -42,7 +56,7 @@ const RegisterForm = () => {
             variant="standard"
           />
         </Box>
-        <Box mb={1} sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
+        <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <LockPersonIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
             value={registerData.password}
@@ -53,18 +67,7 @@ const RegisterForm = () => {
             type="password"
           />
         </Box>
-        <Box mb={1} sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
-          <EmailIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
-          <TextField
-            value={registerData.email}
-            onChange={(e) => updateForm('email', e.target.value)}
-            id={useId()}
-            label="Email address"
-            variant="standard"
-            type="email"
-          />
-        </Box>
-        <Box mb={1} sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
+        <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <PhoneIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
             value={registerData.phone}
@@ -84,7 +87,7 @@ const RegisterForm = () => {
           display: 'flex',
           alignItems: 'center',
           flexDirection: { xs: 'column', sm: 'row' },
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         <Typography variant="body1">Already have an account?</Typography>
