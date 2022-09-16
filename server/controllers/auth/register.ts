@@ -33,7 +33,7 @@ const register = async (req: Request, res: Response, next: NextError) => {
       username,
       phone,
     });
-    if (fileType === 'unknown') deleteFile(req.file!.path);
+    if (req.file && fileType === 'unknown') deleteFile(req.file.path);
     if (fileType !== 'unknown') {
       const relativeFilePath = req.file!.path.split('public')[1];
       newUser.avatar = relativeFilePath;
