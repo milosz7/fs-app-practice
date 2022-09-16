@@ -7,27 +7,37 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import FormBase from '../Common/FormBase';
-import React, { useState, useId } from 'react';
+import React, { useState, useId, useContext } from 'react';
+import AuthContext from '../../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext)!;
+
   const [loginData, setLoginData] = useState({
     username: '',
     password: '',
   });
-
   const updateForm = (field: keyof typeof loginData, value: string) => {
     setLoginData({ ...loginData, [field]: value });
   };
 
-  const submit = (e: React.SyntheticEvent) => {
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    alert('test');
+    const message = await login(loginData);
+    if (message) {
+      return setError(message);
+    }
+    navigate('/');
   };
 
   return (
     <Box width="min(350px, calc(100vw - 30px))" textAlign="center">
-      <FormBase onSubmit={submit} title="Enter account data:" buttonText="log in">
-        <Box mb={1} sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
+      <FormBase error={error} onSubmit={handleSubmit} title="Enter account data:" buttonText="log in">
+        <Box mb={1} mx='auto' sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <AccountCircleIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
             value={loginData.username}
@@ -38,7 +48,7 @@ const LoginForm = () => {
             variant="standard"
           />
         </Box>
-        <Box mb={1} sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
+        <Box mb={1} mx='auto' sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <LockPersonIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
             value={loginData.password}
