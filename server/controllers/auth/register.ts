@@ -12,8 +12,12 @@ const register = async (req: Request, res: Response, next: NextError) => {
     const fileType = req.file ? await declareImageFileType(req.file) : 'unknown';
     const { username, password, phone }: { username?: string; password?: string; phone: string } =
       req.body;
-    if ((password && !validatePassword(password)) || !username || !phone || !password) {
-      return next({ status: 400, message: 'Bad request.' });
+      console.log(req.body)
+    if (!username || !phone || !password) {
+      return next({ status: 400, message: 'Please provide all necessary data!' });
+    }
+    if (password && !validatePassword(password)) {
+      return next({status: 400, message: 'You have to match password requirements.'})
     }
     const isUsernameTaken = await User.findOne({ username: { $eq: username } });
     if (isUsernameTaken) {
