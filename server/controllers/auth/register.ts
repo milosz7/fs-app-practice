@@ -39,7 +39,7 @@ const register = async (req: Request, res: Response, next: NextError) => {
       newUser.avatar = relativeFilePath;
     }
     await newUser.save();
-    return res.status(200).json({ message: 'Success!' });
+    return res.status(200).json({ message: 'Registration succesfull! You can log in to your account.' });
   } catch {
     if (req.file) deleteFile(req.file.path);
     return next({ status: 500, message: 'Internal server error.' });
