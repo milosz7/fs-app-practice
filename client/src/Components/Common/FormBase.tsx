@@ -8,13 +8,15 @@ const FormBase = ({
   title,
   buttonText,
   children,
+  onSubmit,
 }: {
   title: string;
   buttonText: string;
   children: React.ReactNode;
+  onSubmit: React.FormEventHandler
 }) => {
   return (
-    <Paper elevation={3} sx={{ px: 3, py: 5 }} component="form">
+    <Paper onSubmit={onSubmit} elevation={3} sx={{ px: 3, py: 5 }} component="form">
       <Typography color="action" mb={2} variant="h6">
         {title}
       </Typography>
