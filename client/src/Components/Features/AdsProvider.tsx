@@ -1,7 +1,6 @@
 import { ReactNode, useState, useEffect } from 'react';
 import fetchAdData from '../../utils/fetchAdData';
-import { AdData } from '../../../../interfaces/AdsContext';
-import AdsContext from '../../Context/AdsContext';
+import AdsContext, { AdData } from '../../Context/AdsContext';
 
 const AdsProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
