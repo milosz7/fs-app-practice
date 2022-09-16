@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { NextError } from '../../../interfaces/NextError';
 import Ad from '../../models/Ad.model';
 import { createSearchQuery } from '../../utils/createSearchQuery';
-import { AdData } from '../../../interfaces/AdsContext';
+import { AdData }from '../../../client/src/Context/AdsContext'
 import User from '../../models/User.model';
 
 const getAll = async (req: Request, res: Response, next: NextError) => {

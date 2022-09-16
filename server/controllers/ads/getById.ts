@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { NextError } from '../../../interfaces/NextError';
 import Ad from '../../models/Ad.model';
-import { AdData } from '../../../interfaces/AdsContext';
+import { AdData }from '../../../client/src/Context/AdsContext'
 import User from '../../models/User.model';
 
 const getById = async (req: Request, res: Response, next: NextError) => {
