@@ -1,5 +1,12 @@
+import RegisterForm from '../Features/RegisterForm';
+import CenteringBox from '../Common/CenteringBox';
+
 const Register = () => {
-  return ( <h1>Register</h1> );
-}
- 
+  return (
+    <CenteringBox>
+      <RegisterForm />
+    </CenteringBox>
+  );
+};
+
 export default Register;
