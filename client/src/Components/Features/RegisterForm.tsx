@@ -35,7 +35,8 @@ const RegisterForm = () => {
     password: string;
     phone: string;
   }) => {
-    const formData = new FormData();
+    try {
+      const formData = new FormData();
     (Object.keys(newUser) as (keyof typeof newUser)[]).forEach(key => {
       formData.append(key, newUser[key]);
     });
@@ -48,6 +49,9 @@ const RegisterForm = () => {
     });
     const { message }: { message: string } = await response.json();
     setServerResponse(message);
+    } catch {
+      return 'Failed to connect with the server.'
+    }
   };
 
   const submit = (e: React.SyntheticEvent) => {
