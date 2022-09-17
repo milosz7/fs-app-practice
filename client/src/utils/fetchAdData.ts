@@ -1,4 +1,4 @@
-import { AdData } from "../../../interfaces/AdsContext";
+import { AdData } from "../Context/AdsContext";
 
 const fetchAdData = async () => {
   const adsDataResp = await fetch('/api/ads', {
