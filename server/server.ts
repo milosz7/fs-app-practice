@@ -7,6 +7,7 @@ import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import mongoose from 'mongoose';
 import adsRoutes from './routes/ads.routes'; 
+import multer from 'multer';
 
 const app = express();
 
@@ -43,6 +44,9 @@ app.use(express.static(path.join(__dirname, '/public')))
 
 app.use(
   (err: { status: number; message: string }, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json({message: 'Failed to upload avatar image file.'})
+    }
     if (err) {
       return res.status(err.status).json({ message: err.message });
     }

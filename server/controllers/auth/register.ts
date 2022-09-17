@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { NextError } from '../../../interfaces/NextError';
 import { declareImageFileType } from '../../utils/fileFilter';
-import { validatePassword } from '../../utils/validators';
 import { deleteFile } from '../../utils/deleteFile';
 import User from '../../models/User.model';
 import bcrypt from 'bcrypt';
 import { createPhoneRegex } from '../../utils/createPhoneRegex';
-import { MongooseError } from 'mongoose';
 
 const register = async (req: Request, res: Response, next: NextError) => {
   try {
@@ -47,7 +45,7 @@ const register = async (req: Request, res: Response, next: NextError) => {
   } catch (e: unknown) {
     if (req.file) deleteFile(req.file.path);
     if (e instanceof Error && e.name === 'ValidationError')
-      return next({ status: 500, message: 'Provided data is invalid.' });
+      return next({ status: 500, message: 'Provided data is invalid. Have you filled the form correctly?' });
     return next({ status: 500, message: 'Internal server error.' });
   }
 };
