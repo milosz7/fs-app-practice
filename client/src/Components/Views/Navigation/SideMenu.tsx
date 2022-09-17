@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction, useContext } from 'react';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -6,22 +7,25 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Dispatch, SetStateAction } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AuthContext from '../../../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const SideMenu = ({
   elements,
   isOpen,
   setIsOpen,
+  setIsDialogOpen,
 }: {
   elements: { text: string; path: string; icon: JSX.Element }[];
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const user = true;
+  const { user } = useContext(AuthContext)!;
 
   return (
     <Drawer anchor="left" open={isOpen} onClose={() => setIsOpen(false)}>
@@ -47,19 +51,32 @@ const SideMenu = ({
           </ListItem>
         ))}
         <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => setIsOpen(false)}
-            sx={{ p: 2 }}
-            component={RouterLink}
-            to={user ? '/logout' : '/login'}
-          >
-            <ListItemIcon>
-              <AccountCircleIcon />
-            </ListItemIcon>
-            <ListItemText sx={{ textTransform: 'capitalize' }}>
-              {user ? 'logout' : 'login'}
-            </ListItemText>
-          </ListItemButton>
+          {user ? (
+            <ListItemButton
+              onClick={() => {
+                setIsOpen(false);
+                setIsDialogOpen(true);
+              }}
+              sx={{ p: 2 }}
+            >
+              <ListItemIcon>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText sx={{ textTransform: 'capitalize' }}>sign out</ListItemText>
+            </ListItemButton>
+          ) : (
+            <ListItemButton
+              onClick={() => setIsOpen(false)}
+              sx={{ p: 2 }}
+              component={RouterLink}
+              to="/login"
+            >
+              <ListItemIcon>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText sx={{ textTransform: 'capitalize' }}>sign in</ListItemText>
+            </ListItemButton>
+          )}
         </ListItem>
       </List>
     </Drawer>

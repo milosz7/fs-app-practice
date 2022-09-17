@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,10 +13,14 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SideMenu from './SideMenu';
 import SearchBar from './SearchBar';
 import Container from '@mui/material/Container';
+import AuthContext from '../../../Context/AuthContext';
+import LogoutDialog from '../LogoutDialog';
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const user = false;
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { user } = useContext(AuthContext)!;
 
   const navigationElements = [
     { text: 'home', path: '/', icon: <HomeIcon /> },
@@ -29,7 +33,7 @@ const Navigation = () => {
         <Container>
           <Toolbar>
             <IconButton
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => setIsSideMenuOpen(!isSideMenuOpen)}
               size="large"
               edge="start"
               color="inherit"
@@ -58,19 +62,35 @@ const Navigation = () => {
                   {text}
                 </Button>
               ))}
-              <Button
-                startIcon={<AccountCircleIcon />}
-                component={RouterLink}
-                to={user ? '/logout' : '/login'}
-                color="inherit"
-              >
-                {user ? 'logout' : 'login'}
-              </Button>
+              {user ? (
+                <Button
+                  onClick={() => setIsDialogOpen(true)}
+                  startIcon={<AccountCircleIcon />}
+                  color="inherit"
+                >
+                  sign out
+                </Button>
+              ) : (
+                <Button
+                  startIcon={<AccountCircleIcon />}
+                  component={RouterLink}
+                  to="/login"
+                  color="inherit"
+                >
+                  sign in
+                </Button>
+              )}
             </Box>
           </Toolbar>
         </Container>
-        <SideMenu setIsOpen={setIsOpen} isOpen={isOpen} elements={navigationElements} />
+        <SideMenu
+          setIsDialogOpen={setIsDialogOpen}
+          setIsOpen={setIsSideMenuOpen}
+          isOpen={isSideMenuOpen}
+          elements={navigationElements}
+        />
       </AppBar>
+      <LogoutDialog open={isDialogOpen} setOpen={setIsDialogOpen} />
     </Box>
   );
 };
