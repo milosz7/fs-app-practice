@@ -7,19 +7,20 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import FormBase from '../Common/FormBase';
-import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import React, { useId, useState } from 'react';
-import { FormHelperText } from '@mui/material';
 import { validateUsername, validatePassword, validatePhoneNumber } from '../../utils/validators';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { FormHelperText } from '@mui/material';
 
 const RegisterForm = () => {
-
   const [registerData, setRegisterData] = useState({
     username: '',
     password: '',
     phone: '',
   });
+
+  const [avatar, setAvatar] = useState<File | null>(null);
 
   const [serverResponse, setServerResponse] = useState('');
 
@@ -33,31 +34,30 @@ const RegisterForm = () => {
     username: string;
     password: string;
     phone: string;
-    file?: File;
   }) => {
-    console.log(newUser)
+    const formData = new FormData();
+    (Object.keys(newUser) as (keyof typeof newUser)[]).forEach(key => {
+      formData.append(key, newUser[key]);
+    });
+    if (avatar) {
+      formData.append('avatar', avatar);
+    }
     const response = await fetch('/auth/register', {
       method: 'POST',
-      body: JSON.stringify(newUser),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      body: formData,
     });
     const { message }: { message: string } = await response.json();
-    setServerResponse(message)
+    setServerResponse(message);
   };
-  
+
   const submit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    register(registerData)
+    register(registerData);
   };
 
-
-
-
-  const updateForm = (field: keyof typeof registerData, value: string) => {
+  const updateForm = (field: keyof typeof registerData, value: string | File) => {
     setRegisterData({ ...registerData, [field]: value });
-    console.log(registerData, errors)
+    console.log(registerData);
   };
 
   const updateErrors = (field: keyof typeof errors, value: boolean) => {
@@ -81,54 +81,104 @@ const RegisterForm = () => {
   const updatePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     !validatePhoneNumber(e.target.value)
       ? updateErrors('phone', true)
-      : updateErrors('password', false);
+      : updateErrors('phone', false);
     updateForm('phone', e.target.value);
   };
 
   return (
     <Box width="min(350px, calc(100vw - 30px))" textAlign="center" p={3}>
-      <FormBase error={serverResponse} onSubmit={submit} title="Create an account:" buttonText="sign up">
-        <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'center', width: '100%' }} component="div">
+      <FormBase
+        error={serverResponse}
+        onSubmit={submit}
+        title="Create an account:"
+        buttonText="sign up"
+      >
+        <Box
+          mb={1}
+          mx="auto"
+          sx={{ display: 'flex', alignItems: 'center', width: '100%' }}
+          component="div"
+        >
           <AccountCircleIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
-            sx={{flexGrow: 1}}
+            sx={{ flexGrow: 1 }}
             value={registerData.username}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateUsername(e)}
             autoComplete="off"
             id={useId()}
             label="Username"
             variant="standard"
-            FormHelperTextProps={!errors.username ? {style: {color: 'transparent'}} : undefined}
+            FormHelperTextProps={!errors.username ? { style: { color: 'transparent' } } : undefined}
             helperText={'Must be between 3 and 16 characters.'}
           />
         </Box>
-        <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'center', width: '100%' }} component="div">
+        <Box
+          mb={1}
+          mx="auto"
+          sx={{ display: 'flex', alignItems: 'center', width: '100%' }}
+          component="div"
+        >
           <LockPersonIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
-            sx={{flexGrow: 1}}
+            sx={{ flexGrow: 1 }}
             value={registerData.password}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => updatePassword(e)}
             id={useId()}
             label="Password"
             variant="standard"
             type="password"
-            FormHelperTextProps={!errors.password ? {style: {color: 'transparent'}} : undefined}
-            helperText={'Min length 8, 1 uppercase character, 1 digit'}
+            FormHelperTextProps={!errors.password ? { style: { color: 'transparent' } } : undefined}
+            helperText={'Must be 8 characters, 1 uppercase, 1 digit.'}
           />
         </Box>
-        <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'center', width: '100%' }} component="div">
+        <Box
+          mb={1}
+          mx="auto"
+          sx={{ display: 'flex', alignItems: 'center', width: '100%' }}
+          component="div"
+        >
           <PhoneIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
-            sx={{flexGrow: 1}}
+            sx={{ flexGrow: 1 }}
             value={registerData.phone}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => updatePhone(e)}
             id={useId()}
             label="Phone number"
             variant="standard"
             type="phone"
-            FormHelperTextProps={!errors.phone ? {style: {color: 'transparent'}} : undefined}
-            helperText={'Must be 9 digits, +48 prefix is optional'}
+            FormHelperTextProps={!errors.phone ? { style: { color: 'transparent' } } : undefined}
+            helperText={'Must be 9 digits, +48 prefix is optional.'}
           />
+        </Box>
+        <Box sx={{display: 'flex'}}>
+          <CameraAltIcon sx={{ color: 'action.active', mr: 1, mt: 3}} />
+          <Box
+            mb={1}
+            mt={2}
+            mx="auto"
+            sx={{ display: 'flex', alignItems: 'flex-start', width: '100%', flexDirection: 'column' }}
+            component="div"
+          >
+            <Box component="label"
+              sx={{
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                borderBottom: '1px solid',
+                borderColor: 'action.active'
+              }}
+            >
+              <Typography color="action.active" variant="body1">
+                Profile picture
+              </Typography>
+              <Button sx={{ ml: 'auto' , py: 0.5 }} component="label" variant="text">
+                Upload
+                <input onChange={(e) => setAvatar(e.target.files![0])} name="avatar" hidden accept="image/" type="file" />
+              </Button>
+            </Box>
+            <FormHelperText sx={{ml: 0, mt: 0.25}}>Profile picture is optional. (Max size is 2mb)</FormHelperText>
+          </Box>
         </Box>
       </FormBase>
       <Paper
