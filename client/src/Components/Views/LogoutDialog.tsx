@@ -51,7 +51,7 @@ const LogoutDialog = ({
       keepMounted
       onClose={() => handleClose()}
     >
-      <DialogContent sx={{ pt: 4, pb: 1 }}>
+      <DialogContent sx={{ pt: 5, pb: 1 }}>
         <DialogTitle sx={{ pt: 0 }} textAlign="center" fontSize={shouldBeBigger ? 20 : 18} >
           Are you sure you want to sign out?
         </DialogTitle>
@@ -63,7 +63,7 @@ const LogoutDialog = ({
             cancel
           </Button>
         </DialogActions>
-        <FormHelperText sx={{textAlign: 'center', py: 1 }}>{error}</FormHelperText>
+        <FormHelperText sx={{textAlign: 'center', pb: 1 }}>{error}</FormHelperText>
       </DialogContent>
     </Dialog>
   );
