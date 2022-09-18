@@ -1,5 +1,7 @@
+import AdExpanded from '../Views/AdExpanded';
+
 const Ad = () => {
-  return <h1>Ad</h1>;
+  return <AdExpanded />;
 };
 
 export default Ad;
