@@ -3,8 +3,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router-dom';
+import AdsContext from '../../Context/AdsContext';
+import { useContext } from 'react';
 
 const NotFoundError = ({ title, message }: { title: string; message: string }) => {
+
+  const { ads, fetchAdsToState} = useContext(AdsContext)!;
+  const refreshDataIfNone = () => {
+    if (!ads.length) fetchAdsToState('')
+  }
+
   return (
     <CenteringBox>
       <Box textAlign="center">
@@ -20,7 +28,7 @@ const NotFoundError = ({ title, message }: { title: string; message: string }) =
           alt="error404"
         />
       </Box>
-      <Button component={RouterLink} to="/" sx={{ mt: -3 }} variant="contained">
+      <Button onClick={() => refreshDataIfNone()} component={RouterLink} to="/" sx={{ mt: -3 }} variant="contained">
         return to homepage
       </Button>
     </CenteringBox>
