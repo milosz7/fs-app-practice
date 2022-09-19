@@ -30,33 +30,32 @@ const RegisterForm = () => {
     phone: false,
   });
 
-  const register = async (newUser: {
-    username: string;
-    password: string;
-    phone: string;
-  }) => {
+  const register = async (newUser: { username: string; password: string; phone: string }) => {
     try {
       const formData = new FormData();
-    (Object.keys(newUser) as (keyof typeof newUser)[]).forEach(key => {
-      formData.append(key, newUser[key]);
-    });
-    if (avatar) {
-      formData.append('avatar', avatar);
-    }
-    const response = await fetch('/auth/register', {
-      method: 'POST',
-      body: formData,
-    });
-    const { message }: { message: string } = await response.json();
-    setServerResponse(message);
+      (Object.keys(newUser) as (keyof typeof newUser)[]).forEach((key) => {
+        formData.append(key, newUser[key]);
+      });
+      if (avatar) {
+        formData.append('avatar', avatar);
+      }
+      const response = await fetch('/auth/register', {
+        method: 'POST',
+        body: formData,
+      });
+      const { message }: { message: string } = await response.json();
+      setServerResponse(message);
     } catch {
-      return 'Failed to connect with the server.'
+      return 'Failed to connect with the server.';
     }
   };
 
-  const submit = (e: React.SyntheticEvent) => {
+  const submit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    register(registerData);
+    const error = await register(registerData);
+    if (error) {
+      setServerResponse(error);
+    }
   };
 
   const updateForm = (field: keyof typeof registerData, value: string | File) => {
@@ -154,34 +153,48 @@ const RegisterForm = () => {
             helperText={'Must be 9 digits, +48 prefix is optional.'}
           />
         </Box>
-        <Box sx={{display: 'flex'}}>
-          <CameraAltIcon sx={{ color: 'action.active', mr: 1, mt: 3}} />
+        <Box sx={{ display: 'flex' }}>
+          <CameraAltIcon sx={{ color: 'action.active', mr: 1, mt: 3 }} />
           <Box
             mb={1}
             mt={2}
             mx="auto"
-            sx={{ display: 'flex', alignItems: 'flex-start', width: '100%', flexDirection: 'column' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              width: '100%',
+              flexDirection: 'column',
+            }}
             component="div"
           >
-            <Box component="label"
+            <Box
+              component="label"
               sx={{
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
                 borderBottom: '1px solid',
-                borderColor: 'action.active'
+                borderColor: 'action.active',
               }}
             >
               <Typography color="action.active" variant="body1">
                 Profile picture
               </Typography>
-              <Button sx={{ ml: 'auto' , py: 0.5 }} component="label" variant="text">
+              <Button sx={{ ml: 'auto', py: 0.5 }} component="label" variant="text">
                 Upload
-                <input onChange={(e) => setAvatar(e.target.files![0])} name="avatar" hidden accept="image/" type="file" />
+                <input
+                  onChange={(e) => setAvatar(e.target.files![0])}
+                  name="avatar"
+                  hidden
+                  accept="image/"
+                  type="file"
+                />
               </Button>
             </Box>
-            <FormHelperText sx={{ml: 0, mt: 0.25}}>Profile picture is optional. (Max size is 2mb)</FormHelperText>
+            <FormHelperText sx={{ ml: 0, mt: 0.25 }}>
+              Profile picture is optional. (Max size is 2mb)
+            </FormHelperText>
           </Box>
         </Box>
       </FormBase>
