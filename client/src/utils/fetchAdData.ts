@@ -1,12 +1,12 @@
-import { AdData } from "../Context/AdsContext";
+import { AdData } from '../Context/AdsContext';
 
-const fetchAdData = async () => {
-  const adsDataResp = await fetch('/api/ads', {
+const fetchAdData = async (searchQuery: string = '') => {
+  const adsDataResp = await fetch('/api/ads' + (searchQuery ? '?search=' + searchQuery : ''), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-  })
+  });
   const adsData: AdData[] = await adsDataResp.json();
   return adsData;
 };
