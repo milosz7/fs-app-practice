@@ -12,7 +12,7 @@ const getAll = async (req: Request, res: Response, next: NextError) => {
         title: { $regex: createSearchQuery(req.query.search) },
       }).populate<AdData>({ path: 'seller', model: User, select: ['avatar', 'username', 'phone'] });
       if (!requestedAds.length) {
-        return next({ status: 404, message: 'Could not find any ads data.' });
+        return next({ status: 404, message: 'Could not find any ads data matching your criteria.' });
       }
       return res.json(requestedAds);
     }
