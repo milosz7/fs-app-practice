@@ -15,15 +15,18 @@ import SearchBar from './SearchBar';
 import Container from '@mui/material/Container';
 import AuthContext from '../../../Context/AuthContext';
 import LogoutDialog from '../LogoutDialog';
+import AdsContext from '../../../Context/AdsContext';
 
 const Navigation = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const { fetchAdsToState } = useContext(AdsContext)!;
+
   const { user } = useContext(AuthContext)!;
 
   const navigationElements = [
-    { text: 'home', path: '/', icon: <HomeIcon /> },
+    { text: 'home', path: '/', icon: <HomeIcon />, onClick: fetchAdsToState },
     { text: 'add', path: '/add', icon: <AddIcon /> },
   ];
 
@@ -51,17 +54,25 @@ const Navigation = () => {
             </Typography>
             <SearchBar />
             <Box sx={{ display: { xs: 'none', md: 'block' }, ml: 2 }}>
-              {navigationElements.map(({ text, path, icon }) => (
-                <Button
-                  key={text as string}
-                  color="inherit"
-                  component={RouterLink}
-                  to={path}
-                  startIcon={icon}
-                >
-                  {text}
-                </Button>
-              ))}
+              <Button
+                onClick={() => fetchAdsToState('')}
+                key={'home'}
+                color="inherit"
+                component={RouterLink}
+                to={'/'}
+                startIcon={<HomeIcon />}
+              >
+                home
+              </Button>
+              <Button
+                key={'add'}
+                color="inherit"
+                component={RouterLink}
+                to={'/add'}
+                startIcon={<AddIcon />}
+              >
+                add
+              </Button>
               {user ? (
                 <Button
                   onClick={() => setIsDialogOpen(true)}
@@ -87,7 +98,6 @@ const Navigation = () => {
           setIsDialogOpen={setIsDialogOpen}
           setIsOpen={setIsSideMenuOpen}
           isOpen={isSideMenuOpen}
-          elements={navigationElements}
         />
       </AppBar>
       <LogoutDialog open={isDialogOpen} setOpen={setIsDialogOpen} />

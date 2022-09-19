@@ -12,19 +12,20 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AuthContext from '../../../Context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import AdsContext from '../../../Context/AdsContext';
+import HomeIcon from '@mui/icons-material/Home';
+import AddIcon from '@mui/icons-material/Add';
 
 const SideMenu = ({
-  elements,
   isOpen,
   setIsOpen,
   setIsDialogOpen,
 }: {
-  elements: { text: string; path: string; icon: JSX.Element }[];
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const { fetchAdsToState } = useContext(AdsContext)!;
   const { user } = useContext(AuthContext)!;
 
   return (
@@ -37,19 +38,37 @@ const SideMenu = ({
       </Box>
       <Divider />
       <List sx={{ width: 250 }}>
-        {elements.map(({ text, path, icon }) => (
-          <ListItem disablePadding key={text}>
-            <ListItemButton
-              onClick={() => setIsOpen(false)}
-              sx={{ p: 2 }}
-              component={RouterLink}
-              to={path}
-            >
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText sx={{ textTransform: 'capitalize' }}>{text}</ListItemText>
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem disablePadding key="home">
+          <ListItemButton
+            onClick={() => {
+              setIsOpen(false);
+              fetchAdsToState('');
+            }}
+            sx={{ p: 2 }}
+            component={RouterLink}
+            to={'/'}
+          >
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText sx={{ textTransform: 'capitalize' }}>home</ListItemText>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding key="add">
+          <ListItemButton
+            onClick={() => {
+              setIsOpen(false);
+            }}
+            sx={{ p: 2 }}
+            component={RouterLink}
+            to={'/add'}
+          >
+            <ListItemIcon>
+              <AddIcon />
+            </ListItemIcon>
+            <ListItemText sx={{ textTransform: 'capitalize' }}>add</ListItemText>
+          </ListItemButton>
+        </ListItem>
         <ListItem disablePadding>
           {user ? (
             <ListItemButton
