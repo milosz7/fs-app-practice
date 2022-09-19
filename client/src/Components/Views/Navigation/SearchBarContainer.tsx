@@ -1,6 +1,6 @@
 import { styled, alpha } from '@mui/material/styles';
 
-const SearchBarContainer = styled('div')(({ theme }) => ({
+const SearchBarContainer = styled('form')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
