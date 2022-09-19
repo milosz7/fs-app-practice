@@ -8,9 +8,6 @@ const ErrorsProvider = ({ children }: { children: ReactNode }) => {
 
   const closeError = () => {
     setDisplayError(false)
-    setTimeout(() => {
-    setErrorMessage('');
-    }, dataUpdateDelayInMs)
   }
 
   return (
