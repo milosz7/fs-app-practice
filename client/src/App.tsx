@@ -3,17 +3,22 @@ import Container from '@mui/material/Container';
 import { Outlet } from 'react-router-dom';
 import AdsProvider from './Components/Features/AdsProvider';
 import AuthProvider from './Components/Features/AuthProvider';
+import ErrorsProvider from './Components/Features/ErrorsProvider';
+import ErrorAlert from './Components/Views/ErrorAlert';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <AdsProvider>
-        <Navigation />
-        <Container>
-          <Outlet />
-        </Container>
-      </AdsProvider>
-    </AuthProvider>
+    <ErrorsProvider>
+      <AuthProvider>
+        <AdsProvider>
+          <ErrorAlert />
+          <Navigation />
+          <Container>
+            <Outlet />
+          </Container>
+        </AdsProvider>
+      </AuthProvider>
+    </ErrorsProvider>
   );
 };
 
