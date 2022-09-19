@@ -1,3 +1,3 @@
 export const createSearchQuery = (query: string) => {
-  return new RegExp('(?=.*' + query + ')\\w+', 'g');
+  return new RegExp('(?=.*' + query + ').*', 'i');
 };
