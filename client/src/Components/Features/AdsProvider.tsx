@@ -3,12 +3,17 @@ import fetchAdData from '../../utils/fetchAdData';
 import AdsContext, { AdData } from '../../Context/AdsContext';
 
 const AdsProvider = ({ children }: { children: ReactNode }) => {
-  useEffect(() => {
-    const fetch = async () => {
-      const adsData = await fetchAdData();
+  const fetchAdsToState = async (query: string = '') => {
+    try {
+      const adsData = await fetchAdData(query);
       setAds(adsData);
-    };
-    fetch();
+    } catch {
+      return 'Failed to connect with the server.'
+    }
+  };
+  
+  useEffect(() => {
+    fetchAdsToState();
   }, []);
 
   const [ads, setAds] = useState<AdData[] | []>([]);
@@ -26,7 +31,7 @@ const AdsProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AdsContext.Provider value={{ ads, removeAd, addNewAd, editAd }}>
+    <AdsContext.Provider value={{ ads, removeAd, addNewAd, editAd, fetchAdsToState }}>
       {children}
     </AdsContext.Provider>
   );
