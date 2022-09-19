@@ -11,6 +11,7 @@ import { msToPublishedInfo } from '../../utils/msToPublishedInfo';
 import Button from '@mui/material/Button';
 import Zoom from '@mui/material/Zoom';
 import { dataUpdateDelayInMs, transitionFinishDelayInMs } from '../../constants';
+import NotFoundError from './NotFoundError';
 
 const AdExpanded = () => {
   const { id } = useParams();
@@ -28,7 +29,13 @@ const AdExpanded = () => {
     }
   }, [adData]);
 
-  if (!adData) return <h1>Data not found.</h1>; // to improve
+  if (!adData)
+    return (
+      <NotFoundError
+        title="Something went wrong!"
+        message={`Ad data for id: ${id} was not found.`}
+      />
+    );
 
   const { title, description, published, image, price, location, seller } = adData;
 
