@@ -16,16 +16,17 @@ const AdDataManipulationForm = ({ data }: { data?: AdData }) => {
       </Typography>
       <Grid sx={{ maxWidth: '90vw' }} mx="auto" spacing={2} container component="form">
         <Grid item xs={10}>
-          <TextField required sx={{ width: '100%' }} label="Title" />
+          <TextField required sx={{ width: '100%' }} placeholder="Must be between 10 and 50 characters." label="Title" />
         </Grid>
         <Grid item xs={2}>
-          <TextField required sx={{ width: '100%' }} label="Price" />
+          <TextField type="number" required sx={{ width: '100%' }} label="Price" />
         </Grid>
         <Grid item xs={7}>
           <TextField required sx={{ width: '100%' }} label="Location" />
         </Grid>
         <Grid item xs={5}>
           <Box
+            component="label"
             sx={{
               pl: 1.5,
               borderRadius: 1,
@@ -61,7 +62,7 @@ const AdDataManipulationForm = ({ data }: { data?: AdData }) => {
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <TextField label="Description" required multiline rows={8} sx={{ width: '100%' }} />
+          <TextField placeholder='Must be between 20 and 1000 characters.' label="Description" required multiline rows={8} sx={{ width: '100%' }} />
         </Grid>
         <Grid mt={-1} item xs={12}>
           <FormHelperText>* - Required fields</FormHelperText>
