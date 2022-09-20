@@ -23,7 +23,7 @@ const AdCard = ({
   const imagePath = declareImgPath(image);
 
   return (
-    <Card sx={{height: '100%', display: 'flex', flexFlow: 'column nowrap', alignItems: 'flex-start'}}>
+    <Card  sx={{mr: -2, ml: 2, height: '100%', display: 'flex', flexFlow: 'column nowrap', alignItems: 'flex-start'}}>
       <CardMedia
         height={300}
         component="img"
