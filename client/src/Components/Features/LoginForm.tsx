@@ -11,11 +11,13 @@ import React, { useState, useId, useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ErrorsContext from '../../Context/ErrorsContext';
+import LoadingContext from '../../Context/LoadingContext';
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext)!;
   const { setDisplayError, setErrorMessage } = useContext(ErrorsContext)!;
+  const { setLoading } = useContext(LoadingContext)!;
 
   const [loginData, setLoginData] = useState({
     username: '',
@@ -28,7 +30,9 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    setLoading(true);
     const message = await login(loginData);
+    setLoading(false);
     if (message) {
       setErrorMessage(message);
       setDisplayError(true);

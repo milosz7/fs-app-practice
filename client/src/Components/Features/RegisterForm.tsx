@@ -13,6 +13,7 @@ import { validateUsername, validatePassword, validatePhoneNumber } from '../../u
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { FormHelperText } from '@mui/material';
 import ErrorsContext from '../../Context/ErrorsContext';
+import LoadingContext from '../../Context/LoadingContext';
 
 const RegisterForm = () => {
   const [registerData, setRegisterData] = useState({
@@ -22,10 +23,9 @@ const RegisterForm = () => {
   });
 
   const { setErrorMessage, setDisplayError } = useContext(ErrorsContext)!;
+  const { setLoading } = useContext(LoadingContext)!;
 
   const [avatar, setAvatar] = useState<File | null>(null);
-
-  const [serverResponse, setServerResponse] = useState('');
 
   const [errors, setErrors] = useState({
     username: false,
@@ -35,6 +35,7 @@ const RegisterForm = () => {
 
   const register = async (newUser: { username: string; password: string; phone: string }) => {
     try {
+      setLoading(true);
       const formData = new FormData();
       (Object.keys(newUser) as (keyof typeof newUser)[]).forEach((key) => {
         formData.append(key, newUser[key]);
@@ -47,9 +48,11 @@ const RegisterForm = () => {
         body: formData,
       });
       const { message }: { message: string } = await response.json();
+      setLoading(false);
       setErrorMessage(message);
       setDisplayError(true);
     } catch {
+      setLoading(false);
       setErrorMessage('Failed to connect with the server.');
       setDisplayError(true);
     }
