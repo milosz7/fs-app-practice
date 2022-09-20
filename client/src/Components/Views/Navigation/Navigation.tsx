@@ -25,14 +25,9 @@ const Navigation = () => {
 
   const { user } = useContext(AuthContext)!;
 
-  const navigationElements = [
-    { text: 'home', path: '/', icon: <HomeIcon />, onClick: fetchAdsToState },
-    { text: 'add', path: '/add', icon: <AddIcon /> },
-  ];
-
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky">
+      <AppBar sx={{zIndex: 1}} position="sticky">
         <Container>
           <Toolbar>
             <IconButton
