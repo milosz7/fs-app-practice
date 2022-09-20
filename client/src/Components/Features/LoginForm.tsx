@@ -10,10 +10,12 @@ import FormBase from '../Common/FormBase';
 import React, { useState, useId, useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import ErrorsContext from '../../Context/ErrorsContext';
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext)!;
+  const { setDisplayError, setErrorMessage } = useContext(ErrorsContext)!;
 
   const [loginData, setLoginData] = useState({
     username: '',
@@ -23,21 +25,26 @@ const LoginForm = () => {
     setLoginData({ ...loginData, [field]: value });
   };
 
-  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const message = await login(loginData);
     if (message) {
-      return setError(message);
+      setErrorMessage(message);
+      setDisplayError(true);
+      return null;
     }
     navigate('/');
   };
 
   return (
     <Box width="min(350px, calc(100vw - 30px))" textAlign="center">
-      <FormBase error={error} onSubmit={handleSubmit} title="Enter account data:" buttonText="log in">
-        <Box mb={1} mx='auto' sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
+      <FormBase
+        onSubmit={handleSubmit}
+        title="Enter account data:"
+        buttonText="log in"
+      >
+        <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <AccountCircleIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
             value={loginData.username}
@@ -48,7 +55,7 @@ const LoginForm = () => {
             variant="standard"
           />
         </Box>
-        <Box mb={1} mx='auto' sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
+        <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <LockPersonIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
             value={loginData.password}
@@ -68,7 +75,7 @@ const LoginForm = () => {
           display: 'flex',
           alignItems: 'center',
           flexDirection: { xs: 'column', sm: 'row' },
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         <Typography variant="body1">You don't have an account?</Typography>

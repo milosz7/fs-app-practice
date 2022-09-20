@@ -8,10 +8,11 @@ import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import FormBase from '../Common/FormBase';
 import PhoneIcon from '@mui/icons-material/Phone';
-import React, { useId, useState } from 'react';
+import React, { useId, useState, useContext } from 'react';
 import { validateUsername, validatePassword, validatePhoneNumber } from '../../utils/validators';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { FormHelperText } from '@mui/material';
+import ErrorsContext from '../../Context/ErrorsContext';
 
 const RegisterForm = () => {
   const [registerData, setRegisterData] = useState({
@@ -19,6 +20,8 @@ const RegisterForm = () => {
     password: '',
     phone: '',
   });
+
+  const { setErrorMessage, setDisplayError } = useContext(ErrorsContext)!;
 
   const [avatar, setAvatar] = useState<File | null>(null);
 
@@ -44,18 +47,17 @@ const RegisterForm = () => {
         body: formData,
       });
       const { message }: { message: string } = await response.json();
-      setServerResponse(message);
+      setErrorMessage(message);
+      setDisplayError(true);
     } catch {
-      return 'Failed to connect with the server.';
+      setErrorMessage('Failed to connect with the server.');
+      setDisplayError(true);
     }
   };
 
   const submit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const error = await register(registerData);
-    if (error) {
-      setServerResponse(error);
-    }
+    await register(registerData);
   };
 
   const updateForm = (field: keyof typeof registerData, value: string | File) => {
@@ -90,12 +92,7 @@ const RegisterForm = () => {
 
   return (
     <Box width="min(350px, calc(100vw - 30px))" textAlign="center" p={3}>
-      <FormBase
-        error={serverResponse}
-        onSubmit={submit}
-        title="Create an account:"
-        buttonText="sign up"
-      >
+      <FormBase onSubmit={submit} title="Create an account:" buttonText="sign up">
         <Box
           mb={1}
           mx="auto"
