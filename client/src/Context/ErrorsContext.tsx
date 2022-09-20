@@ -6,6 +6,7 @@ interface ErrorsContextInterface {
   setDisplayError: (display: boolean) => void;
   setErrorMessage: (message: string) => void;
   closeError: () => void;
+  autoCloseError: () => void;
 }
 
 const ErrorsContext = createContext<ErrorsContextInterface | null>(null);
