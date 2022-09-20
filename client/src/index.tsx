@@ -16,12 +16,20 @@ import Add from './Components/Pages/Add';
 import Register from './Components/Pages/Register';
 import NotFound from './Components/Pages/NotFound';
 import ProtectedRoute from './Components/Utility/ProtectedRoute';
+import RouteForUnauthorized from './Components/Utility/RouteForUnatuhorized';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/" element={<Home />} />
-      <Route path="login" element={<Login />} />
+      <Route
+        path="login"
+        element={
+          <RouteForUnauthorized>
+            <Login />
+          </RouteForUnauthorized>
+        }
+      />
       <Route
         path="edit/:id"
         element={
@@ -39,7 +47,14 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
-      <Route path="register" element={<Register />} />
+      <Route
+        path="register"
+        element={
+          <RouteForUnauthorized>
+            <Register />
+          </RouteForUnauthorized>
+        }
+      />
       <Route path="*" element={<NotFound />} />
     </Route>
   )
