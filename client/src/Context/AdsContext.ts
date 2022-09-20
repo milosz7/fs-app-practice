@@ -9,7 +9,7 @@ export interface AdData {
   image: string;
   price: number;
   location: string;
-  seller: { username: string; avatar: string; phone: string };
+  seller: {_id: mongoose.Types.ObjectId; username: string; avatar: string; phone: string };
 }
 
 interface AdsContextInterface {
