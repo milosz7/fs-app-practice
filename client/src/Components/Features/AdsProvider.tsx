@@ -2,20 +2,31 @@ import { ReactNode, useState, useEffect, useContext } from 'react';
 import fetchAdData from '../../utils/fetchAdData';
 import AdsContext, { AdData } from '../../Context/AdsContext';
 import ErrorsContext from '../../Context/ErrorsContext';
+import LoadingContext from '../../Context/LoadingContext';
 
 const AdsProvider = ({ children }: { children: ReactNode }) => {
+  const { setLoading } = useContext(LoadingContext)!;
   const { setErrorMessage, setDisplayError } = useContext(ErrorsContext)!;
 
   const fetchAdsToState = async (query: string = '') => {
     try {
+      setLoading(true);
       const adsData = await fetchAdData(query);
-      if (Array.isArray(adsData)) return setAds(adsData);
-      setAds([])
-      setErrorMessage(adsData.message)
+      if (Array.isArray(adsData)) {
+        setAds(adsData);
+        setTimeout(() => {
+          setLoading(false);
+        }, 4000);
+        return null;
+      }
+      setAds([]);
+      setErrorMessage(adsData.message);
+      setLoading(false);
       setDisplayError(true);
     } catch {
       setErrorMessage('Failed to connect with the server.');
       setDisplayError(true);
+      setLoading(false);
     }
   };
 

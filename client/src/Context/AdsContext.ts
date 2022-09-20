@@ -17,7 +17,7 @@ interface AdsContextInterface {
   removeAd: (id: string) => void;
   addNewAd: (data: AdData) => void;
   editAd: (id: string, data: AdData) => void;
-  fetchAdsToState: (query: string | '') => Promise<void | string>
+  fetchAdsToState: (query: string | '') => Promise<void | null>
 }
 
 const AdsContext = createContext<AdsContextInterface | null>(null);
