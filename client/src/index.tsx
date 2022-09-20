@@ -15,15 +15,30 @@ import Ad from './Components/Pages/Ad';
 import Add from './Components/Pages/Add';
 import Register from './Components/Pages/Register';
 import NotFound from './Components/Pages/NotFound';
+import ProtectedRoute from './Components/Utility/ProtectedRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/" element={<Home />} />
       <Route path="login" element={<Login />} />
-      <Route path="edit/:id" element={<Edit />} />
+      <Route
+        path="edit/:id"
+        element={
+          <ProtectedRoute>
+            <Edit />
+          </ProtectedRoute>
+        }
+      />
       <Route path="ad/:id" element={<Ad />} />
-      <Route path="add" element={<Add />} />
+      <Route
+        path="add"
+        element={
+          <ProtectedRoute>
+            <Add />
+          </ProtectedRoute>
+        }
+      />
       <Route path="register" element={<Register />} />
       <Route path="*" element={<NotFound />} />
     </Route>
