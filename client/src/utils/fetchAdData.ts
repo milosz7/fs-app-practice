@@ -7,8 +7,9 @@ const fetchAdData = async (searchQuery: string = '') => {
       'Content-Type': 'application/json',
     },
   });
-  const adsData: AdData[] | {message: string} = await adsDataResp.json();
-  return adsData;
+  const status = adsDataResp.status;
+  const output: AdData[] | { message: string } = await adsDataResp.json();
+  return { output, status };
 };
 
 export default fetchAdData;

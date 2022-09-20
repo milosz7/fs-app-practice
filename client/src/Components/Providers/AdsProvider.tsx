@@ -11,16 +11,18 @@ const AdsProvider = ({ children }: { children: ReactNode }) => {
   const fetchAdsToState = async (query: string = '') => {
     try {
       setLoading(true);
-      const adsData = await fetchAdData(query);
-      if (Array.isArray(adsData)) {
-        setAds(adsData);
-          setLoading(false);
+      const { output, status } = await fetchAdData(query);
+      if (Array.isArray(output)) {
+        setAds(output);
+        setLoading(false);
         return null;
       }
       setAds([]);
-      setErrorMessage(adsData.message);
+      if (status !== 200) {
+        setErrorMessage(output.message);
+        setDisplayError(true);
+      }
       setLoading(false);
-      setDisplayError(true);
     } catch {
       setErrorMessage('Failed to connect with the server.');
       setDisplayError(true);
