@@ -27,7 +27,7 @@ const Navigation = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar sx={{zIndex: 1}} position="sticky">
+      <AppBar sx={{zIndex: 1, boxShadow: 'none'}} position="sticky">
         <Container>
           <Toolbar>
             <IconButton
