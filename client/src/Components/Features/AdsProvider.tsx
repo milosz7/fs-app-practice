@@ -14,9 +14,7 @@ const AdsProvider = ({ children }: { children: ReactNode }) => {
       const adsData = await fetchAdData(query);
       if (Array.isArray(adsData)) {
         setAds(adsData);
-        setTimeout(() => {
           setLoading(false);
-        }, 4000);
         return null;
       }
       setAds([]);
