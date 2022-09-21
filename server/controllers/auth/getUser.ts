@@ -4,7 +4,7 @@ import User from '../../models/User.model';
 
 const getUser = async (req: Request, res: Response, next: NextError) => {
   try {
-    const userId = req.session.id;
+    const userId = req.session.user!.id;
     const userData = await User.findById(userId);
     if (userData) {
       const trimmedUserData = {
