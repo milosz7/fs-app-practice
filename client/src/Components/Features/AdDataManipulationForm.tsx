@@ -1,14 +1,16 @@
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import { AdData } from '../../Context/AdsContext';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { FormHelperText } from '@mui/material';
 
-const AdDataManipulationForm = ({ data }: { data?: AdData }) => {
+const AdDataManipulationForm = ({
+  data,
+}: {
+  data?: { title: string; location: string; price: string; description: string };
+}) => {
   return (
     <Box ml={-2} pt={3}>
       <Typography fontWeight={700} ml={2} mb={2} variant="h5">
@@ -16,7 +18,12 @@ const AdDataManipulationForm = ({ data }: { data?: AdData }) => {
       </Typography>
       <Grid sx={{ maxWidth: '90vw' }} mx="auto" spacing={2} container component="form">
         <Grid item xs={10}>
-          <TextField required sx={{ width: '100%' }} placeholder="Must be between 10 and 50 characters." label="Title" />
+          <TextField
+            required
+            sx={{ width: '100%' }}
+            placeholder="Must be between 10 and 50 characters."
+            label="Title"
+          />
         </Grid>
         <Grid item xs={2}>
           <TextField type="number" required sx={{ width: '100%' }} label="Price" />
@@ -43,26 +50,28 @@ const AdDataManipulationForm = ({ data }: { data?: AdData }) => {
             </Typography>
             <CameraAltIcon sx={{ color: 'action.active', ml: 0.5 }} />
             <Button
-                sx={{
-                  ml: 'auto',
-                  mr: 1
-                }}
-                size="small"
-                component="label"
-                variant="contained"
-              >
-                Upload
-                <input
-                  name="avatar"
-                  hidden
-                  accept="image/"
-                  type="file"
-                />
-              </Button>
+              sx={{
+                ml: 'auto',
+                mr: 1,
+              }}
+              size="small"
+              component="label"
+              variant="contained"
+            >
+              Upload
+              <input name="avatar" hidden accept="image/" type="file" />
+            </Button>
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <TextField placeholder='Must be between 20 and 1000 characters.' label="Description" required multiline rows={8} sx={{ width: '100%' }} />
+          <TextField
+            placeholder="Must be between 20 and 1000 characters."
+            label="Description"
+            required
+            multiline
+            rows={8}
+            sx={{ width: '100%' }}
+          />
         </Grid>
         <Grid mt={-1} item xs={12}>
           <FormHelperText>* - Required fields</FormHelperText>
