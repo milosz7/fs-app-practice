@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import { AdData } from '../../Context/AdsContext';
 import declareImgPath from '../../utils/declareImgPath';
 import Box from '@mui/material/Box';
@@ -10,25 +10,52 @@ import { msToPublishedInfo } from '../../utils/msToPublishedInfo';
 import Button from '@mui/material/Button';
 import Zoom from '@mui/material/Zoom';
 import { dataUpdateDelayInMs, transitionFinishDelayInMs } from '../../constants';
+import mongoose from 'mongoose';
 
-const AdBase = ({ image, title, seller, location, price, description, published }: AdData) => {
+const AdBase = ({
+  image,
+  title,
+  seller,
+  location,
+  price,
+  description,
+  published,
+}: {
+  image: File | string;
+  title: string;
+  seller: {_id?: mongoose.Types.ObjectId; username: string; avatar: string; phone: string};
+  location: string;
+  price: number;
+  description: string;
+  published: string;
+  _id?: mongoose.Types.ObjectId;
+}) => {
   const [displayedPhone, setDisplayedPhone] = useState('');
-  const [displayElement, setDisplayElement] = useState(true);
+  const [displayPhoneData, setDisplayPhoneData] = useState(true);
+  const [displayedImageURL, setDisplayedImageURL] = useState('')
 
+  const declareImageType = useCallback(() => {
+    if (typeof image === 'string') {
+      return setDisplayedImageURL(image)
+    }
+    setDisplayedImageURL(URL.createObjectURL(image))
+  }, [image])
+  
   useEffect(() => {
     const phone = seller.phone;
     const hiddenNumberRemainder = 'xxxxxx';
     const numberWithoutLastSixDigits = phone.slice(0, phone.length - 6);
     setDisplayedPhone(numberWithoutLastSixDigits + hiddenNumberRemainder);
-  }, [seller]);
+    declareImageType();
+  }, [seller, declareImageType]);
 
   const animateTransition = () => {
-    setDisplayElement(false);
+    setDisplayPhoneData(false);
     setTimeout(() => {
       setDisplayedPhone(seller.phone);
     }, dataUpdateDelayInMs);
     setTimeout(() => {
-      setDisplayElement(true);
+      setDisplayPhoneData(true);
     }, transitionFinishDelayInMs);
   };
 
@@ -36,10 +63,10 @@ const AdBase = ({ image, title, seller, location, price, description, published 
   const publishedDate = new Date(published).toLocaleString();
 
   return (
-    <Grid pt={5} container spacing={3}>
+    <Grid container spacing={3}>
       <Grid item xs={12} md={7} borderRadius={3}>
         <img
-          src={declareImgPath(image)}
+          src={displayedImageURL}
           alt={title}
           style={{ width: '100%', objectFit: 'contain', borderRadius: 'inherit' }}
         />
@@ -82,7 +109,7 @@ const AdBase = ({ image, title, seller, location, price, description, published 
           </Paper>
           <Paper elevation={3} sx={{ p: 3 }}>
             <Typography variant="h5">Interested? Contact the seller!</Typography>
-            <Zoom in={displayElement}>
+            <Zoom in={displayPhoneData}>
               <Typography sx={{ py: 1 }} variant="body1" color="action.active">
                 Phone number: {displayedPhone}
               </Typography>
