@@ -15,7 +15,7 @@ const Home = () => {
   return (
     <Box pt={3}>
       {(ads.length !== 0 && !loading) && (
-        <Typography ml={2} mb={2} fontWeight={700} variant="h5">
+        <Typography mb={2} fontWeight={700} variant="h5">
           {pageTitle}
         </Typography>
       )}
