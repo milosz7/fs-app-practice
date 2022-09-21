@@ -17,6 +17,7 @@ import Register from './Components/Pages/Register';
 import NotFound from './Components/Pages/NotFound';
 import ProtectedRoute from './Components/Utility/ProtectedRoute';
 import RouteForUnauthorized from './Components/Utility/RouteForUnatuhorized';
+import AdDataProvider from './Components/Providers/LocalAdDataProvider';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,7 +35,9 @@ const router = createBrowserRouter(
         path="edit/:id"
         element={
           <ProtectedRoute>
-            <Edit />
+            <AdDataProvider>
+              <Edit />
+            </AdDataProvider>
           </ProtectedRoute>
         }
       />
@@ -43,7 +46,9 @@ const router = createBrowserRouter(
         path="add"
         element={
           <ProtectedRoute>
-            <Add />
+            <AdDataProvider>
+              <Add />
+            </AdDataProvider>
           </ProtectedRoute>
         }
       />
