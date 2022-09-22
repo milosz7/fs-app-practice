@@ -7,8 +7,8 @@ import { useTheme } from '@mui/system';
 import Zoom from '@mui/material/Zoom';
 import Box from '@mui/material/Box';
 
-const ErrorAlert = () => {
-  const { displayMessage, displayedMessage, closeAlert, autoCloseAlert } = useContext(ErrorsContext)!;
+const MessageAlert = () => {
+  const { messageSeverity, displayMessage, displayedMessage, closeAlert, autoCloseAlert } = useContext(ErrorsContext)!;
   const theme = useTheme();
   const isMedium = useMediaQuery(theme.breakpoints.up('sm'));
   
@@ -28,7 +28,7 @@ const ErrorAlert = () => {
           },
         }}
         onClose={closeAlert}
-        severity="error"
+        severity={messageSeverity}
       >
         <Typography variant={isMedium ? 'body1' : 'body2'}>{displayedMessage}</Typography>
       </Alert>
@@ -37,4 +37,4 @@ const ErrorAlert = () => {
   );
 };
 
-export default ErrorAlert;
+export default MessageAlert;
