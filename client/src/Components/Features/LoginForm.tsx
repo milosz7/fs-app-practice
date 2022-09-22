@@ -10,13 +10,13 @@ import FormBase from '../Common/FormBase';
 import React, { useState, useId, useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import ErrorsContext from '../../Context/ErrorsContext';
+import AlertsContext from '../../Context/AlertsContext';
 import LoadingContext from '../../Context/LoadingContext';
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext)!;
-  const { setDisplayError, setErrorMessage } = useContext(ErrorsContext)!;
+  const { setMessageDisplay, setDisplayedMessage } = useContext(AlertsContext)!;
   const { setLoading } = useContext(LoadingContext)!;
 
   const [loginData, setLoginData] = useState({
@@ -34,8 +34,8 @@ const LoginForm = () => {
     const message = await login(loginData);
     setLoading(false);
     if (message) {
-      setErrorMessage(message);
-      setDisplayError(true);
+      setDisplayedMessage(message);
+      setMessageDisplay(true);
       return null;
     }
     navigate('/');

@@ -1,23 +1,23 @@
 import Navigation from './Components/Views/Navigation/Navigation';
 import AdsProvider from './Components/Providers/AdsProvider';
 import AuthProvider from './Components/Providers/AuthProvider';
-import ErrorsProvider from './Components/Providers/ErrorsProvider';
-import ErrorAlert from './Components/Views/ErrorAlert';
+import AlertsProvider from './Components/Providers/AlertsProvider';
+import MessageAlert from './Components/Views/MessageAlert';
 import DisplayContent from './Components/Utility/DisplayContent';
 import LoadingProvider from './Components/Providers/LoadingProvider';
 
 const App = () => {
   return (
     <LoadingProvider>
-      <ErrorsProvider>
+      <AlertsProvider>
         <AuthProvider>
           <AdsProvider>
-            <ErrorAlert />
+            <MessageAlert />
             <Navigation />
             <DisplayContent />
           </AdsProvider>
         </AuthProvider>
-      </ErrorsProvider>
+      </AlertsProvider>
     </LoadingProvider>
   );
 };

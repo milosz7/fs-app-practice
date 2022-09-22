@@ -1,12 +1,12 @@
 import { ReactNode, useState, useEffect, useContext } from 'react';
 import fetchAdData from '../../utils/fetchAdData';
 import AdsContext, { AdData } from '../../Context/AdsContext';
-import ErrorsContext from '../../Context/ErrorsContext';
+import ErrorsContext from '../../Context/AlertsContext';
 import LoadingContext from '../../Context/LoadingContext';
 
 const AdsProvider = ({ children }: { children: ReactNode }) => {
   const { setLoading } = useContext(LoadingContext)!;
-  const { setErrorMessage, setDisplayError } = useContext(ErrorsContext)!;
+  const { setDisplayedMessage, setMessageDisplay } = useContext(ErrorsContext)!;
 
   const fetchAdsToState = async (query: string = '') => {
     try {
@@ -19,13 +19,13 @@ const AdsProvider = ({ children }: { children: ReactNode }) => {
       }
       setAds([]);
       if (status !== 200) {
-        setErrorMessage(output.message);
-        setDisplayError(true);
+        setDisplayedMessage(output.message);
+        setMessageDisplay(true);
       }
       setLoading(false);
     } catch {
-      setErrorMessage('Failed to connect with the server.');
-      setDisplayError(true);
+      setDisplayedMessage('Failed to connect with the server.');
+      setMessageDisplay(true);
       setLoading(false);
     }
   };

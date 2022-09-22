@@ -12,8 +12,8 @@ import React, { useId, useState, useContext } from 'react';
 import { validateUsername, validatePassword, validatePhoneNumber } from '../../utils/validators';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { FormHelperText } from '@mui/material';
-import ErrorsContext from '../../Context/ErrorsContext';
 import LoadingContext from '../../Context/LoadingContext';
+import AlertsContext from '../../Context/AlertsContext';
 
 const RegisterForm = () => {
   const [registerData, setRegisterData] = useState({
@@ -22,7 +22,7 @@ const RegisterForm = () => {
     phone: '',
   });
 
-  const { setErrorMessage, setDisplayError } = useContext(ErrorsContext)!;
+  const { setDisplayedMessage, setMessageDisplay } = useContext(AlertsContext)!;
   const { setLoading } = useContext(LoadingContext)!;
 
   const [avatar, setAvatar] = useState<File | null>(null);
@@ -49,12 +49,12 @@ const RegisterForm = () => {
       });
       const { message }: { message: string } = await response.json();
       setLoading(false);
-      setErrorMessage(message);
-      setDisplayError(true);
+      setDisplayedMessage(message);
+      setMessageDisplay(true);
     } catch {
       setLoading(false);
-      setErrorMessage('Failed to connect with the server.');
-      setDisplayError(true);
+      setDisplayedMessage('Failed to connect with the server.');
+      setMessageDisplay(true);
     }
   };
 

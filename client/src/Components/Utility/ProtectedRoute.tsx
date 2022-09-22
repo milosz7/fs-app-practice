@@ -1,20 +1,20 @@
 import { useContext, ReactElement, useEffect } from "react";
 import AuthContext from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import ErrorsContext from "../../Context/ErrorsContext";
+import AlertsContext from "../../Context/AlertsContext";
 
 const ProtectedRoute = ({ children }: {children: ReactElement<any, any>} ) => {
   const { user } = useContext(AuthContext)!;
-  const { setErrorMessage, setDisplayError } = useContext(ErrorsContext)!;
+  const { setDisplayedMessage, setMessageDisplay } = useContext(AlertsContext)!;
   const navigate = useNavigate()
 
   useEffect(() => {
     if(!user) {
       navigate('/login');
-      setErrorMessage('You have to be logged in!');
-      setDisplayError(true);
+      setDisplayedMessage('You have to be logged in!');
+      setMessageDisplay(true);
     }
-  },[navigate, user, setDisplayError, setErrorMessage])
+  },[navigate, user, setMessageDisplay, setDisplayedMessage])
 
   return children; 
 }
