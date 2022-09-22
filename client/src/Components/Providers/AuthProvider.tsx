@@ -3,7 +3,6 @@ import { useState, ReactNode } from 'react';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
-  console.log(user)
 
   const login = async (userData: UserInput) => {
     try {
@@ -20,7 +19,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       const { user }: { user: UserData } = await response.json();
       setUser(user);
-      console.log(user)
     } catch {
       return 'Failed to connect with the server.';
     }
