@@ -58,7 +58,8 @@ const AdDataManipulationForm = ({
         <Grid item xs={2}>
           <TextField
             type="number"
-            value={price}
+            value={price ? price : ''}
+            inputProps={{min: 0}}
             onChange={(e) => updateLocalAdData('price', parseInt(e.target.value))}
             required
             sx={{ width: '100%' }}
