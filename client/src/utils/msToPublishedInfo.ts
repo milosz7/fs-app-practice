@@ -3,7 +3,7 @@ export const msToPublishedInfo = (time: number) => {
   const msToMinute = 60000;
   const msToSecond = 1000;
   const howLongAgo = (number: number, unit: string) => {
-    return `${number} ${number > 1 ? `${unit}s` : unit} ago`;
+    return `${number} ${number === 0 || number > 1 ? `${unit}s` : unit} ago`;
   };
   const weeks = Math.floor(time / (msToHour * 24 * 7));
   if (weeks) return howLongAgo(weeks, 'week');
