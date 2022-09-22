@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState, useCallback } from 'react';
-import { AdData } from '../../Context/AdsContext';
+import { useEffect, useState, useCallback } from 'react';
 import declareImgPath from '../../utils/declareImgPath';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -11,6 +10,7 @@ import Button from '@mui/material/Button';
 import Zoom from '@mui/material/Zoom';
 import { dataUpdateDelayInMs, transitionFinishDelayInMs } from '../../constants';
 import mongoose from 'mongoose';
+import censorPhoneNumber from '../../utils/censorPhoneNumber';
 
 const AdBase = ({
   image,
@@ -43,9 +43,7 @@ const AdBase = ({
   
   useEffect(() => {
     const phone = seller.phone;
-    const hiddenNumberRemainder = 'xxxxxx';
-    const numberWithoutLastSixDigits = phone.slice(0, phone.length - 6);
-    setDisplayedPhone(numberWithoutLastSixDigits + hiddenNumberRemainder);
+    setDisplayedPhone(censorPhoneNumber(phone));
     declareImageType();
   }, [seller, declareImageType]);
 
