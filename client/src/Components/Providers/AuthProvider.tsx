@@ -3,6 +3,7 @@ import { useState, ReactNode } from 'react';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
+  console.log(user)
 
   const login = async (userData: UserInput) => {
     try {
@@ -19,6 +20,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       const { user }: { user: UserData } = await response.json();
       setUser(user);
+      console.log(user)
     } catch {
       return 'Failed to connect with the server.';
     }
@@ -39,7 +41,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, logout, setUser }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

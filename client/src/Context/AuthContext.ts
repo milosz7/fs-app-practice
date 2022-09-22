@@ -14,7 +14,8 @@ export interface UserInput {
 export interface AuthContextInterface {
   user: UserData | null;
   login: (user: UserInput) => Promise<string | undefined>
-  logout: () => Promise<string | undefined>
+  logout: () => Promise<string | undefined>;
+  setUser: (user: UserData | null) => void;
 }
 
 const AuthContext = createContext<AuthContextInterface | null>(null);
