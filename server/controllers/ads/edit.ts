@@ -35,6 +35,7 @@ const edit = async (req: Request, res: Response, next: NextError) => {
       const relativeImagePath = req.file!.path.split('public')[1];
       adToEdit.image = relativeImagePath;
     }
+    adToEdit.published = new Date().toISOString();
     await adToEdit.save();
     return res.status(200).json({ message: 'Success!' });
   } catch (e) {
