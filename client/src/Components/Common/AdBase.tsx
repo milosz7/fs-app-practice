@@ -25,7 +25,7 @@ const AdBase = ({
   title: string;
   seller: {_id?: mongoose.Types.ObjectId; username: string; avatar: string; phone: string};
   location: string;
-  price: number;
+  price?: number;
   description: string;
   published: string;
   _id?: mongoose.Types.ObjectId;
@@ -68,7 +68,7 @@ const AdBase = ({
         <img
           src={displayedImageURL}
           alt={title}
-          style={{ width: '100%', objectFit: 'contain', borderRadius: 'inherit' }}
+          style={{ width: '100%', objectFit: 'cover', borderRadius: 'inherit', height: '100%', maxHeight: 500 }}
         />
       </Grid>
       <Grid item xs={12} md={5}>
@@ -100,7 +100,7 @@ const AdBase = ({
               color="text.primary"
               fontWeight={700}
               variant="h4"
-            >{`${price} USD`}</Typography>
+            >{`${price ? price : 0} USD`}</Typography>
             <Typography
               mt="auto"
               color="action.active"
