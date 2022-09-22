@@ -5,31 +5,68 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { FormHelperText } from '@mui/material';
+import { useContext, FormEvent, useEffect } from 'react';
+import LocalAdDataContext from '../../Context/LocalAdDataContext';
+import mongoose from 'mongoose';
+import useSendFormData from '../../Hooks/useSendFormData';
 
 const AdDataManipulationForm = ({
   data,
 }: {
-  data?: { title: string; location: string; price: string; description: string };
+  data?: {_id: mongoose.Types.ObjectId; title: string; location: string; price: number; description: string };
 }) => {
+  const uploadFormData = useSendFormData();
+  const { setLocalAdData, setAdFile, updateLocalAdData, localAdData, adFile } =
+    useContext(LocalAdDataContext)!;
+
+  useEffect(() => {
+    if (data) setLocalAdData(data);
+  }, [data, setLocalAdData]);
+
+  const { title, location, price, description } = localAdData;
+  
+  const saveOrUploadData = async (e: FormEvent) => {
+    e.preventDefault();
+    const endpoint = data ? `/api/ads/${data._id}` : '/api/ads';
+    const method = data ? 'PUT' : 'POST';
+    const formData = new FormData();
+    (Object.keys(localAdData) as (keyof typeof localAdData)[]).forEach(key => {
+      formData.append(key, localAdData[key].toString());
+    });
+    if (adFile) {
+      formData.append('image', adFile);
+    }
+    await uploadFormData(formData, method, endpoint);
+  }
+
   return (
     <Box ml={-2} pt={3}>
       <Typography fontWeight={700} ml={2} mb={2} variant="h5">
         {data ? 'Edit ad data' : 'Add a new ad'}
       </Typography>
-      <Grid sx={{ maxWidth: '90vw' }} mx="auto" spacing={2} container component="form">
+      <Grid onSubmit={saveOrUploadData} sx={{ maxWidth: '90vw' }} mx="auto" spacing={2} container component="form">
         <Grid item xs={10}>
           <TextField
             required
             sx={{ width: '100%' }}
             placeholder="Must be between 10 and 50 characters."
             label="Title"
+            value={title}
+            onChange={(e) => updateLocalAdData('title', e.target.value)}
           />
         </Grid>
         <Grid item xs={2}>
-          <TextField type="number" required sx={{ width: '100%' }} label="Price" />
+          <TextField
+            type="number"
+            value={price}
+            onChange={(e) => updateLocalAdData('price', parseInt(e.target.value))}
+            required
+            sx={{ width: '100%' }}
+            label="Price"
+          />
         </Grid>
         <Grid item xs={7}>
-          <TextField required sx={{ width: '100%' }} label="Location" />
+          <TextField value={location} onChange={e => updateLocalAdData('location', e.target.value)} required sx={{ width: '100%' }} label="Location" />
         </Grid>
         <Grid item xs={5}>
           <Box
@@ -59,12 +96,20 @@ const AdDataManipulationForm = ({
               variant="contained"
             >
               Upload
-              <input name="avatar" hidden accept="image/" type="file" />
+              <input
+                name="image"
+                onChange={(e) => setAdFile(e.target.files![0])}
+                hidden
+                accept="image/"
+                type="file"
+              />
             </Button>
           </Box>
         </Grid>
         <Grid item xs={12}>
           <TextField
+            value={description}
+            onChange={e => updateLocalAdData('description', e.target.value)}
             placeholder="Must be between 20 and 1000 characters."
             label="Description"
             required
@@ -74,7 +119,10 @@ const AdDataManipulationForm = ({
           />
         </Grid>
         <Grid mt={-1} item xs={12}>
+          <Box display="flex" justifyContent='space-between'>
           <FormHelperText>* - Required fields</FormHelperText>
+          <Button variant="contained" type="submit">{data ? 'confirm changes' : 'upload'}</Button>
+          </Box>
         </Grid>
       </Grid>
     </Box>
