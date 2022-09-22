@@ -5,7 +5,8 @@ interface LocalAdDataInterface {
   localAdData: typeof defaultAdValue
   adFile: File | null;
   setAdFile: (file: File) => void;
-  updateLocalData: (field: keyof typeof defaultAdValue, value: string) => void;
+  updateLocalAdData: (field: keyof typeof defaultAdValue, value: string | number) => void;
+  setLocalAdData: (data: typeof defaultAdValue) => void;
 }
 
 const LocalAdDataContext = createContext<LocalAdDataInterface | null>(null);
