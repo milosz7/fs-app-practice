@@ -19,11 +19,11 @@ import AddIcon from '@mui/icons-material/Add';
 const SideMenu = ({
   isOpen,
   setIsOpen,
-  setIsDialogOpen,
+  openLogoutDialog
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+  openLogoutDialog: () => void;
 }) => {
   const { fetchAdsToState } = useContext(AdsContext)!;
   const { user } = useContext(AuthContext)!;
@@ -74,7 +74,7 @@ const SideMenu = ({
             <ListItemButton
               onClick={() => {
                 setIsOpen(false);
-                setIsDialogOpen(true);
+                openLogoutDialog();
               }}
               sx={{ p: 2 }}
             >

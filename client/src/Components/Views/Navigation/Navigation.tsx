@@ -14,20 +14,23 @@ import SideMenu from './SideMenu';
 import SearchBar from './SearchBar';
 import Container from '@mui/material/Container';
 import AuthContext from '../../../Context/AuthContext';
-import LogoutDialog from '../LogoutDialog';
 import AdsContext from '../../../Context/AdsContext';
+import DialogControlsContext from '../../../Context/DialogControlsContext';
 
 const Navigation = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { fetchAdsToState } = useContext(AdsContext)!;
+  const { user, logout } = useContext(AuthContext)!;
+  const { setupAndOpenDialog } = useContext(DialogControlsContext)!;
 
-  const { user } = useContext(AuthContext)!;
+  const openLogoutDialog = () => {
+    setupAndOpenDialog(logout, 'Are you sure you want to log out?');
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar sx={{zIndex: 1, boxShadow: 'none'}} position="sticky">
+      <AppBar sx={{ zIndex: 1, boxShadow: 'none' }} position="sticky">
         <Container>
           <Toolbar>
             <IconButton
@@ -50,7 +53,9 @@ const Navigation = () => {
             <SearchBar />
             <Box sx={{ display: { xs: 'none', md: 'block' }, ml: 2 }}>
               <Button
-                onClick={() => fetchAdsToState('')}
+                onClick={() => {
+                  fetchAdsToState('');
+                }}
                 key={'home'}
                 color="inherit"
                 component={RouterLink}
@@ -70,7 +75,7 @@ const Navigation = () => {
               </Button>
               {user ? (
                 <Button
-                  onClick={() => setIsDialogOpen(true)}
+                  onClick={() => openLogoutDialog()}
                   startIcon={<AccountCircleIcon />}
                   color="inherit"
                 >
@@ -90,12 +95,11 @@ const Navigation = () => {
           </Toolbar>
         </Container>
         <SideMenu
-          setIsDialogOpen={setIsDialogOpen}
+          openLogoutDialog={openLogoutDialog}
           setIsOpen={setIsSideMenuOpen}
           isOpen={isSideMenuOpen}
         />
       </AppBar>
-      <LogoutDialog open={isDialogOpen} setOpen={setIsDialogOpen} />
     </Box>
   );
 };
