@@ -12,13 +12,16 @@ const DisplayContent = () => {
 
   const isLogged = usePersistLogin();
   useEffect(() => {
-    if (!user) {
-      const fetchSessionData = async () => {
-        setUser(await isLogged());
-      };
-      fetchSessionData();
+    const fetchSession = async () => {
+      if (!user) {
+        const userData = await isLogged();
+        if (userData) {
+          setUser(userData)
+        }
+      }
     }
-  }, [user, isLogged, setUser]);
+    fetchSession();
+  }, [isLogged, setUser, user]);
 
   return (
     <>
