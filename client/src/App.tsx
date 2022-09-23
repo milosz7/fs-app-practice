@@ -5,17 +5,20 @@ import AlertsProvider from './Components/Providers/AlertsProvider';
 import MessageAlert from './Components/Views/MessageAlert';
 import DisplayContent from './Components/Utility/DisplayContent';
 import LoadingProvider from './Components/Providers/LoadingProvider';
+import DialogControlsProvider from './Components/Providers/DialogControlsProvider';
 
 const App = () => {
   return (
     <LoadingProvider>
       <AlertsProvider>
         <AuthProvider>
-          <AdsProvider>
-            <MessageAlert />
-            <Navigation />
-            <DisplayContent />
-          </AdsProvider>
+          <DialogControlsProvider>
+            <AdsProvider>
+              <MessageAlert />
+              <Navigation />
+              <DisplayContent />
+            </AdsProvider>
+          </DialogControlsProvider>
         </AuthProvider>
       </AlertsProvider>
     </LoadingProvider>
