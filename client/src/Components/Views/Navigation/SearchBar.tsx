@@ -1,20 +1,18 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchBarInput from './SearchBarInput';
 import SearchBarContainer from './SearchBarContainer';
 import SearchIconWrapper from './SearchIconWrapper';
-import AdsContext from '../../../Context/AdsContext';
-import { useNavigate } from 'react-router-dom';
+import SearchContext from '../../../Context/SearchContext';
 
 const SearchBar = () => {
-  const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const { fetchAdsToState } = useContext(AdsContext)!;
+  const { debounceSearch, dispatchSearch, searchQuery, setSearchQuery, resetSearchResults } =
+    useContext(SearchContext)!;
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    await fetchAdsToState(searchQuery);
-    navigate('/', { state: { query: searchQuery } });
+    dispatchSearch();
   };
 
   return (
@@ -25,11 +23,12 @@ const SearchBar = () => {
       <SearchBarInput
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        onKeyUp={(e) => debounceSearch(e)}
         placeholder="Search.."
       />
       {searchQuery && (
         <CancelIcon
-          onClick={() => setSearchQuery('')}
+          onClick={() => resetSearchResults()}
           sx={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)' }}
         />
       )}
