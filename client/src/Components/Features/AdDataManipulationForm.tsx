@@ -36,7 +36,7 @@ const AdDataManipulationForm = ({
     if (adFile) {
       formData.append('image', adFile);
     }
-    await uploadFormData(formData, method, endpoint);
+    await uploadFormData(formData, method, endpoint, '/');
   }
 
   return (

@@ -7,7 +7,7 @@ const useSendFormData = () => {
   const navigate = useNavigate();
   const { setLoading } = useContext(LoadingContext)!;
   const { setDisplayedMessage, setMessageDisplay, setMessageSeverity } = useContext(AlertsContext)!;
-  const upload = async (data: FormData, method: 'PUT' | 'POST', endpoint: string) => {
+  const upload = async (data: FormData, method: 'PUT' | 'POST', endpoint: string, redirect: string) => {
     try {
       setLoading(true);
       const response = await fetch(endpoint, {
@@ -21,7 +21,7 @@ const useSendFormData = () => {
         setDisplayedMessage(message);
         setMessageDisplay(true)
         setLoading(false);
-        return navigate('/');
+        return navigate(redirect);
       }
       throw new Error(message);
     } catch (e) {
