@@ -15,6 +15,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AuthContext from '../../Context/AuthContext';
 import { Link as RouterLink } from 'react-router-dom';
+import DialogControlsContext from '../../Context/DialogControlsContext';
+import useDeleteAdData from '../../Hooks/useDeleteData';
 
 const AdBase = ({
   image,
@@ -24,7 +26,7 @@ const AdBase = ({
   price,
   description,
   published,
-  _id
+  _id,
 }: {
   image: File | string;
   title: string;
@@ -39,7 +41,16 @@ const AdBase = ({
   const [displayPhoneData, setDisplayPhoneData] = useState(true);
   const [displayedImageURL, setDisplayedImageURL] = useState('');
   const { user } = useContext(AuthContext)!;
-  
+  const { setupAndOpenDialog } = useContext(DialogControlsContext)!;
+  const deleteData = useDeleteAdData();
+
+  const deleteRequest = () => {
+    return setupAndOpenDialog(
+      () => deleteData(`/api/ads/${_id}`, '/'),
+      'Are you sure that you want to delete that ad?'
+    );
+  };
+
   const declareImageType = useCallback(() => {
     if (typeof image === 'string') {
       return setDisplayedImageURL(image);
@@ -97,7 +108,13 @@ const AdBase = ({
                 <Box
                   sx={{ display: 'flex', alignSelf: 'center', ml: 'auto', flexDirection: 'column' }}
                 >
-                  <Button component={RouterLink} to={`/edit/${_id}`} variant="contained" size="small" startIcon={<EditIcon />}>
+                  <Button
+                    component={RouterLink}
+                    to={`/edit/${_id}`}
+                    variant="contained"
+                    size="small"
+                    startIcon={<EditIcon />}
+                  >
                     edit
                   </Button>
                   <Button
@@ -106,6 +123,7 @@ const AdBase = ({
                     size="small"
                     startIcon={<DeleteIcon />}
                     color="error"
+                    onClick={() => deleteRequest()}
                   >
                     delete
                   </Button>
