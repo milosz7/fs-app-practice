@@ -9,45 +9,27 @@ import { Link as RouterLink } from 'react-router-dom';
 import FormBase from '../Common/FormBase';
 import React, { useState, useId, useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import AlertsContext from '../../Context/AlertsContext';
-import LoadingContext from '../../Context/LoadingContext';
 
 const LoginForm = () => {
-  const navigate = useNavigate();
   const { login } = useContext(AuthContext)!;
-  const { setMessageDisplay, setDisplayedMessage } = useContext(AlertsContext)!;
-  const { setLoading } = useContext(LoadingContext)!;
 
   const [loginData, setLoginData] = useState({
     username: '',
     password: '',
   });
+
   const updateForm = (field: keyof typeof loginData, value: string) => {
     setLoginData({ ...loginData, [field]: value });
   };
 
-
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setLoading(true);
-    const message = await login(loginData);
-    setLoading(false);
-    if (message) {
-      setDisplayedMessage(message);
-      setMessageDisplay(true);
-      return null;
-    }
-    navigate('/');
+    login(loginData);
   };
 
   return (
     <Box width="min(350px, calc(100vw - 30px))" textAlign="center">
-      <FormBase
-        onSubmit={handleSubmit}
-        title="Enter account data:"
-        buttonText="log in"
-      >
+      <FormBase onSubmit={handleSubmit} title="Enter account data:" buttonText="log in">
         <Box mb={1} mx="auto" sx={{ display: 'flex', alignItems: 'flex-end' }} component="div">
           <AccountCircleIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
           <TextField
