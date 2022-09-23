@@ -5,7 +5,7 @@ interface DialogContextInterface {
   setIsDialogOpen: (isOpen: boolean) => void;
   dispatchAction: () => void;
   dialogTitle: string;
-  setupAndOpenDialog: (action: Function, title: string) => void;
+  setupAndOpenDialog: (action: () => unknown, title: string) => void;
 }
 
 const DialogControlsContext = createContext<DialogContextInterface | null>(null);
