@@ -1,12 +1,9 @@
-import { useEffect, useState, useContext } from 'react';
-import declareImgPath from '../../utils/declareImgPath';
-import fetchUserData from '../../utils/fetchUserData';
-import ErrorsContext from '../../Context/ErrorsContext';
+import { useEffect, useState, useContext, useRef } from 'react';
+import AlertsContext from '../../Context/AlertsContext';
 import AdBase from '../Common/AdBase';
-import { msToPublishedInfo } from '../../utils/msToPublishedInfo';
-import { defaultAdImagePath } from '../../constants';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import useFetchUserData from '../../Hooks/useFetchUserData';
 
 const AdPreview = ({
   previewData,
@@ -18,45 +15,38 @@ const AdPreview = ({
     description: string;
     price: number;
   };
-  image?: File;
+  image: File | string;
 }) => {
   const [userData, setUserData] = useState<{
     username: string;
     avatar: string;
     phone: string;
   } | null>(null);
-  const { setErrorMessage, setDisplayError } = useContext(ErrorsContext)!;
-  const previewPublishedDate = Date.parse(new Date().toISOString());
+  const { setDisplayedMessage, setMessageDisplay } = useContext(AlertsContext)!;
+  const previewPublishedDate = useRef<string>();
+  const fetchUserData = useFetchUserData()
 
   useEffect(() => {
-    const fetch = async () => {
-      try {
-        const { output, status } = await fetchUserData();
-        if (status === 200) {
-          return setUserData(output as { username: string; avatar: string; phone: string });
-        }
-        const { message } = output as { message: string };
-        setErrorMessage(`${message}, failed to load preview.`);
-        setDisplayError(true);
-      } catch {
-        setErrorMessage('Failed to connect with the server.');
-        setDisplayError(true);
-      }
+    const dispatchFetchUser = async () => {
+      setUserData(await fetchUserData())
     };
-    fetch();
-  }, [setDisplayError, setErrorMessage]);
+    dispatchFetchUser();
+    previewPublishedDate.current = new Date().toISOString();
+  }, [setMessageDisplay, setDisplayedMessage, fetchUserData]);
 
   if (!userData) return null;
 
   return (
     <Box mt={3}>
-    <Typography mb={2} fontWeight={700} variant="h5">Ad preview</Typography>
-    <AdBase
-      published={msToPublishedInfo(previewPublishedDate)}
-      {...previewData}
-      image={image ? image : declareImgPath(defaultAdImagePath)}
-      seller={userData}
-    />
+      <Typography mb={2} fontWeight={700} variant="h5">
+        Ad preview
+      </Typography>
+      <AdBase
+        published={previewPublishedDate.current!}
+        {...previewData}
+        image={image}
+        seller={userData}
+      />
     </Box>
   );
 };
