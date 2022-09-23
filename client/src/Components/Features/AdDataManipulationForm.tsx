@@ -11,40 +11,62 @@ import mongoose from 'mongoose';
 import useSendFormData from '../../Hooks/useSendFormData';
 
 const AdDataManipulationForm = ({
-  data,
+  id,
+  prevTitle,
+  prevLocation,
+  prevPrice,
+  prevDescription,
 }: {
-  data?: {_id: mongoose.Types.ObjectId; title: string; location: string; price: number; description: string };
+  id?: mongoose.Types.ObjectId;
+  prevTitle?: string;
+  prevLocation?: string;
+  prevPrice?: number;
+  prevDescription?: string;
 }) => {
   const uploadFormData = useSendFormData();
   const { setLocalAdData, setAdFile, updateLocalAdData, localAdData, adFile } =
     useContext(LocalAdDataContext)!;
-
   useEffect(() => {
-    if (data) setLocalAdData(data);
-  }, [data, setLocalAdData]);
+    if (prevTitle && prevLocation && prevPrice && prevDescription) {
+      console.log(prevTitle, prevPrice, prevLocation);
+      setLocalAdData({
+        title: prevTitle,
+        location: prevLocation,
+        price: prevPrice,
+        description: prevDescription,
+      });
+    }
+  }, [prevTitle, prevLocation, prevPrice, prevDescription, setLocalAdData]);
 
-  const { title, location, price, description } = localAdData;
-  
   const saveOrUploadData = async (e: FormEvent) => {
     e.preventDefault();
-    const endpoint = data ? `/api/ads/${data._id}` : '/api/ads';
-    const method = data ? 'PUT' : 'POST';
+    const endpoint = id ? `/api/ads/${id}` : '/api/ads';
+    const method = id ? 'PUT' : 'POST';
     const formData = new FormData();
-    (Object.keys(localAdData) as (keyof typeof localAdData)[]).forEach(key => {
+    (Object.keys(localAdData) as (keyof typeof localAdData)[]).forEach((key) => {
       formData.append(key, localAdData[key].toString());
     });
     if (adFile) {
       formData.append('image', adFile);
     }
     await uploadFormData(formData, method, endpoint, '/');
-  }
+  };
+
+  const { price, location, description, title } = localAdData;
 
   return (
     <Box ml={-2} pt={3}>
       <Typography fontWeight={700} ml={2} mb={2} variant="h5">
-        {data ? 'Edit ad data' : 'Add a new ad'}
+        {id ? 'Edit ad data' : 'Add a new ad'}
       </Typography>
-      <Grid onSubmit={saveOrUploadData} sx={{ maxWidth: '90vw' }} mx="auto" spacing={2} container component="form">
+      <Grid
+        onSubmit={saveOrUploadData}
+        sx={{ maxWidth: '90vw' }}
+        mx="auto"
+        spacing={2}
+        container
+        component="form"
+      >
         <Grid item xs={10}>
           <TextField
             required
@@ -59,7 +81,7 @@ const AdDataManipulationForm = ({
           <TextField
             type="number"
             value={price ? price : ''}
-            inputProps={{min: 0}}
+            inputProps={{ min: 0 }}
             onChange={(e) => updateLocalAdData('price', parseInt(e.target.value))}
             required
             sx={{ width: '100%' }}
@@ -67,7 +89,13 @@ const AdDataManipulationForm = ({
           />
         </Grid>
         <Grid item xs={7}>
-          <TextField value={location} onChange={e => updateLocalAdData('location', e.target.value)} required sx={{ width: '100%' }} label="Location" />
+          <TextField
+            value={location}
+            onChange={(e) => updateLocalAdData('location', e.target.value)}
+            required
+            sx={{ width: '100%' }}
+            label="Location"
+          />
         </Grid>
         <Grid item xs={5}>
           <Box
@@ -110,7 +138,7 @@ const AdDataManipulationForm = ({
         <Grid item xs={12}>
           <TextField
             value={description}
-            onChange={e => updateLocalAdData('description', e.target.value)}
+            onChange={(e) => updateLocalAdData('description', e.target.value)}
             placeholder="Must be between 20 and 1000 characters."
             label="Description"
             required
@@ -120,9 +148,11 @@ const AdDataManipulationForm = ({
           />
         </Grid>
         <Grid mt={-1} item xs={12}>
-          <Box display="flex" justifyContent='space-between'>
-          <FormHelperText>* - Required fields</FormHelperText>
-          <Button variant="contained" type="submit">{data ? 'confirm changes' : 'upload'}</Button>
+          <Box display="flex" justifyContent="space-between">
+            <FormHelperText>* - Required fields</FormHelperText>
+            <Button variant="contained" type="submit">
+              {id ? 'confirm changes' : 'upload'}
+            </Button>
           </Box>
         </Grid>
       </Grid>

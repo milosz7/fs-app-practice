@@ -26,7 +26,7 @@ const Edit = () => {
 
   return (
     <Box mt={3}>
-      <AdDataManipulationForm data={{ _id, title, description, price, location }} />
+      <AdDataManipulationForm id={_id} prevTitle={title} prevDescription={description} prevLocation={location} prevPrice={price} />
       <AdPreview image={adFile ? adFile : declareImgPath(image)} previewData={{title, location, description, price}} />
     </Box>
   );
