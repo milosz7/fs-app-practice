@@ -11,7 +11,6 @@ const register = async (req: Request, res: Response, next: NextError) => {
     const fileType = req.file ? await declareImageFileType(req.file) : 'unknown';
     const { username, password, phone }: { username?: string; password?: string; phone: string } =
       req.body;
-    console.log(req.body);
     if (!username || !phone || !password) {
       return next({ status: 400, message: 'Please provide all necessary data!' });
     }
