@@ -48,7 +48,6 @@ const RegisterForm = () => {
 
   const updateForm = (field: keyof typeof registerData, value: string | File) => {
     setRegisterData({ ...registerData, [field]: value });
-    console.log(registerData);
   };
 
   const updateErrors = (field: keyof typeof errors, value: boolean) => {

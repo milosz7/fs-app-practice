@@ -3,15 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import LoadingContext from '../Context/LoadingContext';
 import AlertsContext from '../Context/AlertsContext';
 import AdsContext from '../Context/AdsContext';
-import LocalAdDataContext from '../Context/LocalAdDataContext';
-import { defaultAdValue } from '../constants';
 
 const useSendFormData = () => {
   const navigate = useNavigate();
   const { setLoading } = useContext(LoadingContext)!;
   const { setDisplayedMessage, setMessageDisplay, setMessageSeverity } = useContext(AlertsContext)!;
   const { fetchAdsToState } = useContext(AdsContext)!;
-  const { setLocalAdData } = useContext(LocalAdDataContext)!;
   const upload = async (data: FormData, method: 'PUT' | 'POST', endpoint: string, redirect: string) => {
     try {
       setLoading(true);
@@ -25,7 +22,6 @@ const useSendFormData = () => {
         setMessageSeverity('success');
         setDisplayedMessage(message);
         setMessageDisplay(true);
-        setLocalAdData(defaultAdValue);
         await fetchAdsToState('');
         return navigate(redirect);
       }
