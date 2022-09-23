@@ -8,12 +8,11 @@ import Button from '@mui/material/Button';
 import { Link as RouterLink } from 'react-router-dom';
 import FormBase from '../Common/FormBase';
 import PhoneIcon from '@mui/icons-material/Phone';
-import React, { useId, useState, useContext } from 'react';
+import React, { useId, useState } from 'react';
 import { validateUsername, validatePassword, validatePhoneNumber } from '../../utils/validators';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { FormHelperText } from '@mui/material';
-import LoadingContext from '../../Context/LoadingContext';
-import AlertsContext from '../../Context/AlertsContext';
+import useSendFormData from '../../Hooks/useSendFormData';
 
 const RegisterForm = () => {
   const [registerData, setRegisterData] = useState({
@@ -21,9 +20,7 @@ const RegisterForm = () => {
     password: '',
     phone: '',
   });
-
-  const { setDisplayedMessage, setMessageDisplay } = useContext(AlertsContext)!;
-  const { setLoading } = useContext(LoadingContext)!;
+  const upload = useSendFormData();
 
   const [avatar, setAvatar] = useState<File | null>(null);
 
@@ -33,34 +30,20 @@ const RegisterForm = () => {
     phone: false,
   });
 
-  const register = async (newUser: { username: string; password: string; phone: string }) => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      (Object.keys(newUser) as (keyof typeof newUser)[]).forEach((key) => {
-        formData.append(key, newUser[key]);
-      });
-      if (avatar) {
-        formData.append('avatar', avatar);
-      }
-      const response = await fetch('/auth/register', {
-        method: 'POST',
-        body: formData,
-      });
-      const { message }: { message: string } = await response.json();
-      setLoading(false);
-      setDisplayedMessage(message);
-      setMessageDisplay(true);
-    } catch {
-      setLoading(false);
-      setDisplayedMessage('Failed to connect with the server.');
-      setMessageDisplay(true);
+  const register = (newUser: { username: string; password: string; phone: string }) => {
+    const formData = new FormData();
+    (Object.keys(newUser) as (keyof typeof newUser)[]).forEach((key) => {
+      formData.append(key, newUser[key]);
+    });
+    if (avatar) {
+      formData.append('avatar', avatar);
     }
+    upload(formData, 'POST', '/auth/register', '/login');
   };
 
   const submit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    await register(registerData);
+    register(registerData);
   };
 
   const updateForm = (field: keyof typeof registerData, value: string | File) => {
