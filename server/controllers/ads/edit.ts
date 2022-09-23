@@ -40,6 +40,8 @@ const edit = async (req: Request, res: Response, next: NextError) => {
     return res.status(200).json({ message: 'Success!' });
   } catch (e) {
     if (req.file) deleteFile(req.file.path);
+    if (e instanceof Error && e.name === 'ValidationError')
+    return next({ status: 500, message: 'Provided data is invalid. Have you filled the form correctly?' });
     return next({ status: 500, message: 'Internal server error.' });
   }
 };
