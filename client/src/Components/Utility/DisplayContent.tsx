@@ -5,6 +5,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Container from '@mui/material/Container';
 import usePersistLogin from '../../Hooks/usePersistLogin';
 import AuthContext from '../../Context/AuthContext';
+import ActionDialog from '../Views/ActionDialog';
 
 const DisplayContent = () => {
   const { loading } = useContext(LoadingContext)!;
@@ -27,6 +28,7 @@ const DisplayContent = () => {
     <>
       <LinearProgress sx={{ visibility: loading ? 'visible' : 'hidden' }} color="secondary" />
       <Container>
+        <ActionDialog />
         <Outlet />
       </Container>
     </>
