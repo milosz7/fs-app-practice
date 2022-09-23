@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import declareImgPath from '../../utils/declareImgPath';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -11,6 +11,10 @@ import Zoom from '@mui/material/Zoom';
 import { dataUpdateDelayInMs, transitionFinishDelayInMs } from '../../constants';
 import mongoose from 'mongoose';
 import censorPhoneNumber from '../../utils/censorPhoneNumber';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AuthContext from '../../Context/AuthContext';
+import { Link as RouterLink } from 'react-router-dom';
 
 const AdBase = ({
   image,
@@ -20,10 +24,11 @@ const AdBase = ({
   price,
   description,
   published,
+  _id
 }: {
   image: File | string;
   title: string;
-  seller: {_id?: mongoose.Types.ObjectId; username: string; avatar: string; phone: string};
+  seller: { _id?: mongoose.Types.ObjectId; username: string; avatar: string; phone: string };
   location: string;
   price?: number;
   description: string;
@@ -32,15 +37,16 @@ const AdBase = ({
 }) => {
   const [displayedPhone, setDisplayedPhone] = useState('');
   const [displayPhoneData, setDisplayPhoneData] = useState(true);
-  const [displayedImageURL, setDisplayedImageURL] = useState('')
-
+  const [displayedImageURL, setDisplayedImageURL] = useState('');
+  const { user } = useContext(AuthContext)!;
+  
   const declareImageType = useCallback(() => {
     if (typeof image === 'string') {
-      return setDisplayedImageURL(image)
+      return setDisplayedImageURL(image);
     }
-    setDisplayedImageURL(URL.createObjectURL(image))
-  }, [image])
-  
+    setDisplayedImageURL(URL.createObjectURL(image));
+  }, [image]);
+
   useEffect(() => {
     const phone = seller.phone;
     setDisplayedPhone(censorPhoneNumber(phone));
@@ -66,7 +72,13 @@ const AdBase = ({
         <img
           src={displayedImageURL}
           alt={title}
-          style={{ width: '100%', objectFit: 'cover', borderRadius: 'inherit', height: '100%', maxHeight: 500 }}
+          style={{
+            width: '100%',
+            objectFit: 'cover',
+            borderRadius: 'inherit',
+            height: '100%',
+            maxHeight: 500,
+          }}
         />
       </Grid>
       <Grid item xs={12} md={5}>
@@ -81,6 +93,24 @@ const AdBase = ({
               <Typography sx={{ alignSelf: 'center' }} variant="h6">
                 {seller.username}
               </Typography>
+              {user && seller._id === user.id && (
+                <Box
+                  sx={{ display: 'flex', alignSelf: 'center', ml: 'auto', flexDirection: 'column' }}
+                >
+                  <Button component={RouterLink} to={`/edit/${_id}`} variant="contained" size="small" startIcon={<EditIcon />}>
+                    edit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 0.5 }}
+                    size="small"
+                    startIcon={<DeleteIcon />}
+                    color="error"
+                  >
+                    delete
+                  </Button>
+                </Box>
+              )}
             </Box>
           </Paper>
           <Paper
@@ -94,11 +124,9 @@ const AdBase = ({
               <Typography variant="body1">{location}</Typography>
               <LocationOnIcon />
             </Box>
-            <Typography
-              color="text.primary"
-              fontWeight={700}
-              variant="h4"
-            >{`${price ? price : 0} USD`}</Typography>
+            <Typography color="text.primary" fontWeight={700} variant="h4">{`${
+              price ? price : 0
+            } USD`}</Typography>
             <Typography
               mt="auto"
               color="action.active"
