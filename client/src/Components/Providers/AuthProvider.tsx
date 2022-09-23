@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
-  const { setMessageDisplay, setDisplayedMessage } = useContext(AlertsContext)!;
+  const { setMessageDisplay, setDisplayedMessage, setMessageSeverity } = useContext(AlertsContext)!;
   const { setLoading } = useContext(LoadingContext)!;
   const navigate = useNavigate();
 
@@ -43,18 +43,21 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     try {
       setLoading(true);
-      const response = await fetch('auth/logout', {
+      const response = await fetch('/auth/logout', {
         method: 'DELETE',
       });
       const status = response.status;
-
+      const { message }: { message: string } = await response.json();
+      
       if (status === 200) {
         setLoading(false);
         setUser(null);
+        setMessageSeverity('success');
+        setDisplayedMessage(message);
+        setMessageDisplay(true);
+        navigate('/');
       }
       if (status !== 200) {
-        const { message }: { message: string } = await response.json();
-        
         throw new Error(message);
       }
     } catch (e) {
