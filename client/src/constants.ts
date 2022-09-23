@@ -10,3 +10,5 @@ export const defaultAdValue = {
 };
 export const enterKeyValue = 'Enter';
 export const debounceTimeoutInMs = 750;
+const alertTransitionDelayInMs = 500
+export const changeAlertZIndexDelayInMs = errorAlertDisplayDurationInMs + alertTransitionDelayInMs;
