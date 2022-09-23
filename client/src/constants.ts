@@ -8,3 +8,5 @@ export const defaultAdValue = {
   price: 0,
   description: '',
 };
+export const enterKeyValue = 'Enter';
+export const debounceTimeoutInMs = 750;

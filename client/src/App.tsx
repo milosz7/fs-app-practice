@@ -6,6 +6,7 @@ import MessageAlert from './Components/Views/MessageAlert';
 import DisplayContent from './Components/Utility/DisplayContent';
 import LoadingProvider from './Components/Providers/LoadingProvider';
 import DialogControlsProvider from './Components/Providers/DialogControlsProvider';
+import SearchProvider from './Components/Providers/SearchProvider';
 
 const App = () => {
   return (
@@ -14,9 +15,11 @@ const App = () => {
         <AuthProvider>
           <DialogControlsProvider>
             <AdsProvider>
-              <MessageAlert />
-              <Navigation />
-              <DisplayContent />
+              <SearchProvider>
+                <MessageAlert />
+                <Navigation />
+                <DisplayContent />
+              </SearchProvider>
             </AdsProvider>
           </DialogControlsProvider>
         </AuthProvider>
