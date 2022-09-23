@@ -11,15 +11,20 @@ const DialogControlsProvider = ({ children }: { children: ReactNode }) => {
     setIsDialogOpen(false);
   };
 
+  const setupAndOpenDialog = (action: Function, title: string) => {
+    setDialogAction(() => action);
+    setDialogTitle(title);
+    setIsDialogOpen(true);
+  };
+
   return (
     <DialogControlsContext.Provider
       value={{
         isDialogOpen,
         setIsDialogOpen,
-        setDialogAction,
         dispatchAction,
         dialogTitle,
-        setDialogTitle,
+        setupAndOpenDialog,
       }}
     >
       {children}
