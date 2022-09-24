@@ -62,6 +62,6 @@ app.use(
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
   })
   
-app.listen(8000, () => {
-  console.log('Listening on port 8000.');
+app.listen(process.env.PORT || 8000, () => {
+  if (process.env.NODE_ENV === 'develpoment') console.log('Listening on port 8000.');
 });
