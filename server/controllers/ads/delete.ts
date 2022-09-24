@@ -17,7 +17,7 @@ const deleteAd = async (req: Request, res: Response, next: NextError) => {
     return res.status(200).json({ message: 'Success!' });
   } catch {
     return next({ status: 500, message: 'Internal server error.' });
-  }
+  } 
 };
 
 export default deleteAd;
