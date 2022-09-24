@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
-  const { setMessageDisplay, setDisplayedMessage, setMessageSeverity } = useContext(AlertsContext)!;
+  const { displayError, displaySuccess } = useContext(AlertsContext)!;
   const { setLoading } = useContext(LoadingContext)!;
   const navigate = useNavigate();
 
@@ -25,18 +25,17 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         const { user }: { user: UserData } = await response.json();
         setUser(user);
         setLoading(false);
-        navigate('/')
+        navigate('/');
       }
       if (status !== 200) {
         const { message }: { message: string } = await response.json();
         throw new Error(message);
       }
     } catch (e) {
-      setLoading(false);
       e instanceof Error
-        ? setDisplayedMessage(e.message)
-        : setDisplayedMessage('Failed to connect with the server.');
-      setMessageDisplay(true);
+        ? displayError(e.message)
+        : displayError('Failed to connect with the server.');
+      setLoading(false);
     }
   };
 
@@ -48,24 +47,21 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       const status = response.status;
       const { message }: { message: string } = await response.json();
-      
+
       if (status === 200) {
         setLoading(false);
         setUser(null);
-        setMessageSeverity('success');
-        setDisplayedMessage(message);
-        setMessageDisplay(true);
+        displaySuccess(message);
         navigate('/');
       }
       if (status !== 200) {
         throw new Error(message);
       }
     } catch (e) {
-      setLoading(false);
       e instanceof Error
-        ? setDisplayedMessage(e.message)
-        : setDisplayedMessage('Failed to connect with the server.');
-      setMessageDisplay(true);
+        ? displayError(e.message)
+        : displayError('Failed to connect with the server.');
+      setLoading(false);
     }
   };
 

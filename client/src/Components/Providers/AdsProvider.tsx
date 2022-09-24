@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect, useContext } from 'react';
+import { ReactNode, useState, useEffect, useContext, useCallback } from 'react';
 import fetchAdData from '../../utils/fetchAdData';
 import AdsContext, { AdData } from '../../Context/AdsContext';
 import ErrorsContext from '../../Context/AlertsContext';
@@ -6,9 +6,9 @@ import LoadingContext from '../../Context/LoadingContext';
 
 const AdsProvider = ({ children }: { children: ReactNode }) => {
   const { setLoading } = useContext(LoadingContext)!;
-  const { setDisplayedMessage, setMessageDisplay } = useContext(ErrorsContext)!;
+  const { displayError } = useContext(ErrorsContext)!;
 
-  const fetchAdsToState = async (query: string = '') => {
+  const fetchAdsToState = useCallback(async (query: string = '') => {
     try {
       setLoading(true);
       const { output, status } = await fetchAdData(query);
@@ -19,20 +19,19 @@ const AdsProvider = ({ children }: { children: ReactNode }) => {
       }
       setAds([]);
       if (status !== 200) {
-        setDisplayedMessage(output.message);
-        setMessageDisplay(true);
+        throw new Error(output.message);
       }
-      setLoading(false);
-    } catch {
-      setDisplayedMessage('Failed to connect with the server.');
-      setMessageDisplay(true);
+    } catch (e) {
+      e instanceof Error
+        ? displayError(e.message)
+        : displayError('Failed to connect with the server.');
       setLoading(false);
     }
-  };
+  }, [setLoading, displayError]);
 
   useEffect(() => {
     fetchAdsToState();
-  }, []);
+  }, [fetchAdsToState]);
 
   const [ads, setAds] = useState<AdData[] | []>([]);
 

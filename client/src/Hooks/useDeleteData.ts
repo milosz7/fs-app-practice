@@ -5,7 +5,7 @@ import AlertsContext from '../Context/AlertsContext';
 
 const useDeleteAdData = () => {
   const { setLoading } = useContext(LoadingContext)!;
-  const { setDisplayedMessage, setMessageDisplay, setMessageSeverity } = useContext(AlertsContext)!;
+  const { displayError, displaySuccess } = useContext(AlertsContext)!;
   const navigate = useNavigate();
   const deleteData = async (endpoint: string, redirect: string) => {
     try {
@@ -19,21 +19,18 @@ const useDeleteAdData = () => {
       const { message }: { message: string } = await response.json();
 
       if (status === 200) {
-        setMessageSeverity('success');
-        setDisplayedMessage(message);
+        displaySuccess(message);
         setLoading(false);
-        setMessageDisplay(true);
         navigate(redirect);
       }
       if (status !== 200) {
         throw new Error(message);
       }
     } catch (e) {
-      setLoading(false);
       e instanceof Error
-        ? setDisplayedMessage(e.message)
-        : setDisplayedMessage('Failed to connect with the server');
-      setMessageDisplay(true);
+        ? displayError(e.message)
+        : displayError('Failed to connect with the server');
+      setLoading(false);
     }
   };
   return deleteData;

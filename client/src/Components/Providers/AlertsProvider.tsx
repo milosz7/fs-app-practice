@@ -22,15 +22,26 @@ const AlertsProvider = ({ children }: { children: ReactNode }) => {
     }, errorAlertDisplayDurationInMs);
   };
 
+  const displayError = (message: string) => {
+    setMessageSeverity('error');
+    setDisplayedMessage(message);
+    setMessageDisplay(true);
+  };
+
+  const displaySuccess = (message: string) => {
+    setMessageSeverity('success');
+    setDisplayedMessage(message);
+    setMessageDisplay(true);
+  }
+
   return (
     <AlertsContext.Provider
       value={{
         displayMessage,
         displayedMessage,
         messageSeverity,
-        setMessageDisplay,
-        setDisplayedMessage,
-        setMessageSeverity,
+        displayError,
+        displaySuccess,
         closeAlert,
         autoCloseAlert,
       }}

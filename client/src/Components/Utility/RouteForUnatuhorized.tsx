@@ -1,24 +1,23 @@
-import { useContext, ReactElement, useEffect } from "react";
-import AuthContext from "../../Context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import AlertsContext from "../../Context/AlertsContext";
-import LoadingContext from "../../Context/LoadingContext";
+import { useContext, ReactElement, useEffect } from 'react';
+import AuthContext from '../../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import AlertsContext from '../../Context/AlertsContext';
+import LoadingContext from '../../Context/LoadingContext';
 
-const RouteForUnauthorized = ({ children }: {children: ReactElement<any, any>} ) => {
+const RouteForUnauthorized = ({ children }: { children: ReactElement<any, any> }) => {
   const { user } = useContext(AuthContext)!;
-  const { setDisplayedMessage, setMessageDisplay } = useContext(AlertsContext)!;
+  const { displayError } = useContext(AlertsContext)!;
   const { loading } = useContext(LoadingContext)!;
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(user && !loading) {
+    if (user && !loading) {
       navigate('/');
-      setDisplayedMessage('You are already logged in.');
-      setMessageDisplay(true);
+      displayError('You are already logged in.');
     }
-  },[navigate, user, setMessageDisplay, setDisplayedMessage, loading])
+  }, [navigate, user, loading, displayError]);
 
-  return children; 
-}
- 
+  return children;
+};
+
 export default RouteForUnauthorized;

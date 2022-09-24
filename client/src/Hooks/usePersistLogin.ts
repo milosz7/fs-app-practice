@@ -5,7 +5,7 @@ import LoadingContext from '../Context/LoadingContext';
 import AuthContext from '../Context/AuthContext';
 
 const usePersistLogin = () => {
-  const { setDisplayedMessage, setMessageDisplay } = useContext(AlertsContext)!;
+  const { displayError } = useContext(AlertsContext)!;
   const { setLoading } = useContext(LoadingContext)!;
   const { user } = useContext(AuthContext)!;
 
@@ -29,12 +29,11 @@ const usePersistLogin = () => {
         return null
       } catch {
         setLoading(false)
-        setDisplayedMessage('Failed to fetch session data.');
-        setMessageDisplay(true)
+        displayError('Failed to fetch session data.');
         return null
       }
     }
-  }, [user, setLoading, setDisplayedMessage, setMessageDisplay])
+  }, [user, setLoading, displayError])
   return getUserData;
 };
 

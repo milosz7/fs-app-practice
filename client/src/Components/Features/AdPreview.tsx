@@ -1,5 +1,4 @@
-import { useEffect, useState, useContext, useRef } from 'react';
-import AlertsContext from '../../Context/AlertsContext';
+import { useEffect, useState, useRef } from 'react';
 import AdBase from '../Common/AdBase';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -22,7 +21,6 @@ const AdPreview = ({
     avatar: string;
     phone: string;
   } | null>(null);
-  const { setDisplayedMessage, setMessageDisplay } = useContext(AlertsContext)!;
   const previewPublishedDate = useRef<string>();
   const fetchUserData = useFetchUserData()
 
@@ -32,7 +30,7 @@ const AdPreview = ({
     };
     dispatchFetchUser();
     previewPublishedDate.current = new Date().toISOString();
-  }, [setMessageDisplay, setDisplayedMessage, fetchUserData]);
+  }, [fetchUserData]);
 
   if (!userData) return null;
 

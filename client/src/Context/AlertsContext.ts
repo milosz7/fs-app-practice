@@ -4,9 +4,8 @@ interface AlertsContextInterface {
   displayMessage: boolean;
   displayedMessage: string;
   messageSeverity: 'error' | 'info' | 'success' | 'warning';
-  setMessageDisplay: (display: boolean) => void;
-  setDisplayedMessage: (message: string) => void;
-  setMessageSeverity: (severity: 'error' | 'info' | 'success' | 'warning') => void;
+  displayError: (message: string) => void;
+  displaySuccess: (message: string) => void
   closeAlert: () => void;
   autoCloseAlert: () => void;
 }

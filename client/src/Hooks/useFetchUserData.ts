@@ -4,7 +4,7 @@ import LoadingContext from '../Context/LoadingContext';
 
 const useFetchUserData = () => {
   const { setLoading } = useContext(LoadingContext)!;
-  const { setDisplayedMessage, setMessageDisplay } = useContext(AlertsContext)!;
+  const { displayError } = useContext(AlertsContext)!;
   const fetchUserData = useCallback(async () => {
     try {
       setLoading(true);
@@ -23,14 +23,13 @@ const useFetchUserData = () => {
       const { message }: { message: string } = await response.json();
       throw new Error(message);
     } catch (e) {
-      setLoading(false);
       e instanceof Error
-        ? setDisplayedMessage(e.message)
-        : setDisplayedMessage('Failed to connect with the server.');
-      setMessageDisplay(true);
+        ? displayError(e.message)
+        : displayError('Failed to connect with the server.');
+      setLoading(false);
       return null;
     }
-  }, [setDisplayedMessage, setLoading, setMessageDisplay])
+  }, [setLoading, displayError]);
   return fetchUserData;
 };
 
