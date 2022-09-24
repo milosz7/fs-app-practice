@@ -1,9 +1,9 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useCallback } from 'react';
 import AlertsContext from '../../Context/AlertsContext';
 import { errorAlertDisplayDurationInMs } from '../../constants';
 
 const AlertsProvider = ({ children }: { children: ReactNode }) => {
-  const defaultSeverity = 'error'
+  const defaultSeverity = 'error';
   const [displayMessage, setMessageDisplay] = useState(false);
   const [displayedMessage, setDisplayedMessage] = useState('');
   const [messageSeverity, setMessageSeverity] = useState<'error' | 'info' | 'success' | 'warning'>(
@@ -18,21 +18,27 @@ const AlertsProvider = ({ children }: { children: ReactNode }) => {
   const autoCloseAlert = () => {
     setTimeout(() => {
       setMessageDisplay(false);
-      setMessageSeverity(defaultSeverity)
+      setMessageSeverity(defaultSeverity);
     }, errorAlertDisplayDurationInMs);
   };
 
-  const displayError = (message: string) => {
-    setMessageSeverity('error');
-    setDisplayedMessage(message);
-    setMessageDisplay(true);
-  };
+  const displayError = useCallback(
+    (message: string) => {
+      setMessageSeverity('error');
+      setDisplayedMessage(message);
+      setMessageDisplay(true);
+    },
+    [setDisplayedMessage, setMessageDisplay, setMessageSeverity]
+  );
 
-  const displaySuccess = (message: string) => {
-    setMessageSeverity('success');
-    setDisplayedMessage(message);
-    setMessageDisplay(true);
-  }
+  const displaySuccess = useCallback(
+    (message: string) => {
+      setMessageSeverity('success');
+      setDisplayedMessage(message);
+      setMessageDisplay(true);
+    },
+    [setDisplayedMessage, setMessageDisplay, setMessageSeverity]
+  );
 
   return (
     <AlertsContext.Provider
