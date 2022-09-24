@@ -12,7 +12,7 @@ const RouteForUnauthorized = ({ children }: { children: ReactElement<any, any> }
 
   useEffect(() => {
     if (user && !loading) {
-      navigate('/');
+      navigate('/', {replace: true});
       displayError('You are already logged in.');
     }
   }, [navigate, user, loading, displayError]);

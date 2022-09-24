@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }: {children: ReactElement<any, any>} ) => {
 
   useEffect(() => {
     if(!user && !loading) {
-      navigate('/login');
+      navigate('/login', {replace: true});
     }
   },[navigate, user, loading])
 
