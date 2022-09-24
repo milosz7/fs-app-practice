@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "export NODE_ENV=development ; nodemon server/server.ts",
     "heroku-prebuild": "npm install",
-    "build": "tsc && cd client && npm install --force && npm run build",
+    "build": "tsc && cp -r ./server/public ./build && cd client && npm install --force && npm run build",
     "start": "node build/server.js"
   },
   "keywords": [],
