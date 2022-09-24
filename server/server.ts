@@ -42,6 +42,7 @@ app.use('/api', adsRoutes)
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(express.static(path.join(__dirname, '/public')))
 
+
 app.use(
   (err: { status: number; message: string }, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof multer.MulterError) {
@@ -51,12 +52,16 @@ app.use(
       return res.status(err.status).json({ message: err.message });
     }
   }
-);
-
-app.use((req, res) => {
-  return res.status(404).send({ message: 'Not found.' });
-});
-
+  );
+  
+  app.use((req, res) => {
+    return res.status(404).send({ message: 'Not found.' });
+  });
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  })
+  
 app.listen(8000, () => {
   console.log('Listening on port 8000.');
 });
