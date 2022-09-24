@@ -17,6 +17,7 @@ import AuthContext from '../../Context/AuthContext';
 import { Link as RouterLink } from 'react-router-dom';
 import DialogControlsContext from '../../Context/DialogControlsContext';
 import useDeleteAdData from '../../Hooks/useDeleteData';
+import IconButton from '@mui/material/IconButton';
 
 const AdBase = ({
   image,
@@ -95,7 +96,7 @@ const AdBase = ({
       <Grid item xs={12} md={5}>
         <Box height="100%" display="flex" flexDirection="column">
           <Paper sx={{ p: 3, mb: 3 }} elevation={3}>
-            <Box gap={3} display="flex">
+            <Box display="flex" gap={3} alignItems="center">
               <img
                 style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: '100%' }}
                 src={declareImgPath(seller.avatar)}
@@ -106,27 +107,19 @@ const AdBase = ({
               </Typography>
               {user && seller._id === user.id && (
                 <Box
-                  sx={{ display: 'flex', alignSelf: 'center', ml: 'auto', flexDirection: 'column' }}
+                  sx={{
+                    display: 'flex',
+                    alignSelf: 'center',
+                    ml: 'auto',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                  }}
                 >
-                  <Button
-                    component={RouterLink}
-                    to={`/edit/${_id}`}
-                    variant="contained"
-                    size="small"
-                    startIcon={<EditIcon />}
-                  >
-                    edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{ mt: 0.5 }}
-                    size="small"
-                    startIcon={<DeleteIcon />}
-                    color="error"
-                    onClick={() => deleteRequest()}
-                  >
-                    delete
-                  </Button>
+                  <IconButton component={RouterLink} to={`/edit/${_id}`} color="primary">
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => deleteRequest()} color="error">
+                    <DeleteIcon />
+                  </IconButton>
                 </Box>
               )}
             </Box>
@@ -142,7 +135,7 @@ const AdBase = ({
               <Typography variant="body1">{location}</Typography>
               <LocationOnIcon />
             </Box>
-            <Typography color="text.primary" fontWeight={700} variant="h4">{`${
+            <Typography mb={2} color="text.primary" fontWeight={700} variant="h4">{`${
               price ? price : 0
             } USD`}</Typography>
             <Typography
