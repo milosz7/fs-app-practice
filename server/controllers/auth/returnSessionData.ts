@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../../interfaces/NextError';
+import { NextError } from '../../interfaces/NextError';
 
 const returnSessionData = async (req: Request, res: Response, next: NextError) => {
   try {

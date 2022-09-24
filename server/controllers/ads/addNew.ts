@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../../interfaces/NextError';
-import { passedAdData } from '../../../interfaces/PassedAdData';
+import { NextError } from '../../interfaces/NextError';
+import { passedAdData } from '../../interfaces/PassedAdData';
 import { declareImageFileType } from '../../utils/fileFilter';
 import { deleteFile } from '../../utils/deleteFile';
 import Ad from '../../models/Ad.model';

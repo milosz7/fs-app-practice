@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../../interfaces/NextError';
+import { NextError } from '../../interfaces/NextError';
 import Ad from '../../models/Ad.model';
 
 const deleteAd = async (req: Request, res: Response, next: NextError) => {

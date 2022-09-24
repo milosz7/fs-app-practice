@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../../interfaces/NextError';
+import { NextError } from '../../interfaces/NextError';
 
 const logout = (req: Request, res: Response, next: NextError) => {
   req.session.destroy((err) => {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../../interfaces/NextError';
+import { NextError } from '../../interfaces/NextError';
 import User from '../../models/User.model';
 import bcrypt from 'bcrypt';
 

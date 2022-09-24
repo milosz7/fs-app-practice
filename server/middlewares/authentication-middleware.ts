@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../interfaces/NextError';
+import { NextError } from '../interfaces/NextError';
 
 export const isLoggedIn = (req: Request, res: Response, next: NextError) => {
   if (!req.session.user) {

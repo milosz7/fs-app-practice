@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NextError } from '../../../interfaces/NextError';
+import { NextError } from '../../interfaces/NextError';
 import { declareImageFileType } from '../../utils/fileFilter';
 import { deleteFile } from '../../utils/deleteFile';
 import User from '../../models/User.model';
