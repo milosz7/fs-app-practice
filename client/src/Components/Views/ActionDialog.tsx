@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import DialogControlsContext from '../../Context/DialogControlsContext';
 
 const ActionDialog = () => {
-  const { dispatchAction, isDialogOpen, setIsDialogOpen } = useContext(DialogControlsContext)!;
+  const { dispatchAction, isDialogOpen, setIsDialogOpen, dialogTitle } = useContext(DialogControlsContext)!;
   const theme = useTheme();
   const shouldBeBigger = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -24,7 +24,7 @@ const ActionDialog = () => {
     >
       <DialogContent sx={{ pt: 3, pb: 1 }}>
         <DialogTitle sx={{ pt: 0 }} textAlign="center" fontSize={shouldBeBigger ? 20 : 18}>
-          Are you sure you want to sign out?
+         {dialogTitle}
         </DialogTitle>
         <DialogActions sx={{ pb: 3, display: 'flex', justifyContent: 'center' }}>
           <Button
