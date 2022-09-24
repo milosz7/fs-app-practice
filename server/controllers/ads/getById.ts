@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { NextError } from '../../interfaces/NextError';
 import Ad from '../../models/Ad.model';
-import { AdData }from '../../../client/src/Context/AdsContext'
+import { PopulatedAdData } from '../../interfaces/PopulatedAdData';
 import User from '../../models/User.model';
 
 const getById = async (req: Request, res: Response, next: NextError) => {
   try {
     const requestedAdId = req.params.id;
-    const requestedAd = await Ad.findById(requestedAdId).populate<AdData>({
+    const requestedAd = await Ad.findById(requestedAdId).populate<PopulatedAdData>({
       path: 'seller',
       model: User,
       select: ['avatar', 'username', 'phone'],
