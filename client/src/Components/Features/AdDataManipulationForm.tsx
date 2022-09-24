@@ -4,11 +4,14 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import { FormHelperText } from '@mui/material';
-import { useContext, FormEvent, useEffect } from 'react';
+import { ButtonGroup, FormHelperText } from '@mui/material';
+import { useContext, FormEvent, useEffect, useRef, useState } from 'react';
 import LocalAdDataContext from '../../Context/LocalAdDataContext';
 import mongoose from 'mongoose';
 import useSendFormData from '../../Hooks/useSendFormData';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/system';
+import { useNavigate } from 'react-router-dom'
 
 const AdDataManipulationForm = ({
   id,
@@ -26,9 +29,22 @@ const AdDataManipulationForm = ({
   const uploadFormData = useSendFormData();
   const { setLocalAdData, setAdFile, updateLocalAdData, localAdData, adFile } =
     useContext(LocalAdDataContext)!;
+
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const shouldBeBigger = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const [fileInputHeight, setFileInputHeight] = useState(0);
+  const inputRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const invisibleHeightRemainderInPx = 2;
+    if (inputRef.current)
+      setFileInputHeight(inputRef.current.clientHeight - invisibleHeightRemainderInPx);
+  }, [setFileInputHeight]);
+
   useEffect(() => {
     if (prevTitle && prevLocation && prevPrice && prevDescription) {
-      console.log(prevTitle, prevPrice, prevLocation);
       setLocalAdData({
         title: prevTitle,
         location: prevLocation,
@@ -67,8 +83,9 @@ const AdDataManipulationForm = ({
         container
         component="form"
       >
-        <Grid item xs={10}>
+        <Grid item xs={12} md={10}>
           <TextField
+            ref={inputRef}
             required
             sx={{ width: '100%' }}
             placeholder="Must be between 10 and 50 characters."
@@ -77,7 +94,7 @@ const AdDataManipulationForm = ({
             onChange={(e) => updateLocalAdData('title', e.target.value)}
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={12} md={2}>
           <TextField
             type="number"
             value={price ? price : ''}
@@ -88,7 +105,7 @@ const AdDataManipulationForm = ({
             label="Price"
           />
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={12} md={7}>
           <TextField
             value={location}
             onChange={(e) => updateLocalAdData('location', e.target.value)}
@@ -97,7 +114,7 @@ const AdDataManipulationForm = ({
             label="Location"
           />
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={12} md={5}>
           <Box
             component="label"
             sx={{
@@ -105,7 +122,7 @@ const AdDataManipulationForm = ({
               borderRadius: 1,
               display: 'flex',
               alignItems: 'center',
-              height: 'calc(100% - 2px)',
+              height: fileInputHeight,
               border: '1px solid',
               borderColor: 'grey.400',
               '&:hover': { borderColor: 'grey.900' },
@@ -148,11 +165,20 @@ const AdDataManipulationForm = ({
           />
         </Grid>
         <Grid mt={-1} item xs={12}>
-          <Box display="flex" justifyContent="space-between">
-            <FormHelperText>* - Required fields</FormHelperText>
-            <Button variant="contained" type="submit">
-              {id ? 'confirm changes' : 'upload'}
-            </Button>
+          <Box
+            sx={{ flexDirection: { xs: 'column', sm: 'row' } }}
+            display="flex"
+            justifyContent="space-between"
+          >
+            <FormHelperText sx={{mb: 1}}>* - Required fields</FormHelperText>
+            <ButtonGroup sx={{alignSelf: 'flex-end'}} size={shouldBeBigger ? 'medium' : 'small'}>
+              <Button onClick={() => navigate(-1)} sx={{ mr: 1 }} variant="contained" color="error">
+                cancel
+              </Button>
+              <Button variant="contained" type="submit">
+                {id ? 'confirm changes' : 'upload'}
+              </Button>
+            </ButtonGroup>
           </Box>
         </Grid>
       </Grid>
