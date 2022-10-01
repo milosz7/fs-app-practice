@@ -39,7 +39,7 @@ const AdCard = ({
         </Typography>
       </CardContent>
       <CardActions sx={{mt: 'auto'}}>
-        <Button component={RouterLink} to={'ad/' + id} color="primary" variant="text">
+        <Button component={RouterLink} to={'ads/' + id} color="primary" variant="text">
           Details
         </Button>
       </CardActions>

@@ -39,7 +39,7 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         }
       />
-      <Route path="ad/:id" element={<Ad />} />
+      <Route path="ads/:id" element={<Ad />} />
       <Route
         path="add"
         element={
