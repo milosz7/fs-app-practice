@@ -1,10 +1,30 @@
 import Box from '@mui/material/Box';
+import { useState, useCallback, useEffect } from 'react';
 
-const AdImageContainer = ({ path, altText }: { path: string; altText: string }) => {
+const AdImageContainer = ({
+  pathOrFile,
+  altText,
+}: {
+  pathOrFile: string | File;
+  altText: string;
+}) => {
+  const [displayedImageURL, setDisplayedImageURL] = useState('');
+  
+  const declareImageType = useCallback(() => {
+    if (typeof pathOrFile === 'string') {
+      return setDisplayedImageURL(pathOrFile);
+    }
+    setDisplayedImageURL(URL.createObjectURL(pathOrFile));
+  }, [pathOrFile]);
+
+  useEffect(() => {
+    declareImageType();
+  }, [declareImageType]);
+
   return (
     <Box>
       <img
-        src={path}
+        src={displayedImageURL}
         alt={altText}
         style={{
           width: '100%',
