@@ -96,7 +96,14 @@ const AdBase = ({
       <Grid item xs={12} md={5}>
         <Box height="100%" display="flex" flexDirection="column">
           <Paper sx={{ p: 3, mb: 3 }} elevation={3}>
-            <Box display="flex" gap={3} alignItems="center">
+            <Box
+              component={RouterLink}
+              to={`/profile/${seller.username}`}
+              display="flex"
+              gap={3}
+              alignItems="center"
+              sx={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}
+            >
               <img
                 style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: '100%' }}
                 src={declareImgPath(seller.avatar)}
