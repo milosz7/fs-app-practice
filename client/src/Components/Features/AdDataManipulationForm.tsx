@@ -87,7 +87,7 @@ const AdDataManipulationForm = ({
           <TextField
             ref={inputRef}
             required
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', background: 'white' }}
             placeholder="Must be between 10 and 50 characters."
             label="Title"
             value={title}
@@ -101,7 +101,7 @@ const AdDataManipulationForm = ({
             inputProps={{ min: 0 }}
             onChange={(e) => updateLocalAdData('price', parseInt(e.target.value))}
             required
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', background: 'white'  }}
             label="Price"
           />
         </Grid>
@@ -110,7 +110,7 @@ const AdDataManipulationForm = ({
             value={location}
             onChange={(e) => updateLocalAdData('location', e.target.value)}
             required
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', background: 'white'  }}
             label="Location"
           />
         </Grid>
@@ -126,6 +126,7 @@ const AdDataManipulationForm = ({
               border: '1px solid',
               borderColor: 'grey.400',
               '&:hover': { borderColor: 'grey.900' },
+              background: 'white' 
             }}
           >
             <Typography color="action.active" variant="body1">
@@ -161,7 +162,7 @@ const AdDataManipulationForm = ({
             required
             multiline
             rows={8}
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', background: 'white'  }}
           />
         </Grid>
         <Grid mt={-1} item xs={12}>
