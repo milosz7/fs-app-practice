@@ -22,7 +22,7 @@ const addNew = async (req: Request, res: Response, next: NextError) => {
         const relativeImagePath = req.file!.path.split('public')[1];
         newAd.image = relativeImagePath;
       }
-      newAd.save();
+      await newAd.save();
       return res.status(200).json({ message: 'Success!' });
     }
     if (req.file) deleteFile(req.file.path);
