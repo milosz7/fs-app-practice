@@ -27,7 +27,7 @@ const AdPreview = ({
     avatar: string;
     phone: string;
   } | null>(null);
-  const previewPublishedDate = useRef<string>();
+  const previewPublishedDate = useRef<string>(new Date().toISOString());
   const fetchUserData = useFetchUserData();
 
   useEffect(() => {
@@ -35,7 +35,6 @@ const AdPreview = ({
       setUserData(await fetchUserData());
     };
     dispatchFetchUser();
-    previewPublishedDate.current = new Date().toISOString();
   }, [fetchUserData]);
 
   if (!userData) return null;
@@ -61,7 +60,7 @@ const AdPreview = ({
               title={title}
               location={location}
               price={price}
-              published={previewPublishedDate.current!}
+              published={previewPublishedDate.current}
             />
             <AdContactContainer phone={userData.phone} />
           </Box>
