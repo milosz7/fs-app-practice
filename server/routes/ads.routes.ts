@@ -6,10 +6,13 @@ import getById from '../controllers/ads/getById';
 import addNew from '../controllers/ads/addNew';
 import deleteAd from '../controllers/ads/delete';
 import edit from '../controllers/ads/edit';
+import getByUsername from '../controllers/ads/getByUsername';
 
 const router = express.Router();
 
 router.route('/ads').get(getAll);
+
+router.route('/ads/user/:username').get(getByUsername);
 
 router.route('/ads/:id').get(getById);
 
