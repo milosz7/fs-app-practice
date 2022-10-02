@@ -63,5 +63,7 @@ app.use(
   })
   
 app.listen(process.env.PORT || 8000, () => {
-  if (process.env.NODE_ENV === 'develpoment') console.log('Listening on port 8000.');
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Listening on port 8000.');
+  } 
 });
