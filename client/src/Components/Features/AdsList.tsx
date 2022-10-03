@@ -23,7 +23,7 @@ const AdsList = () => {
   return (
     <Grid container spacing={2}>
       {ads.map(({ _id, image, title, location }) => (
-        <Grid item key={_id.toString()} xs={12} sm={6} md={4} xl={3}>
+        <Grid item key={_id.toString()} xs={12} >
           <AdCard id={_id} image={image} title={title} location={location}></AdCard>
         </Grid>
       ))}
