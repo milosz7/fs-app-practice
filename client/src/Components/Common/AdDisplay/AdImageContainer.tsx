@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import { useState, useCallback, useEffect } from 'react';
 
 const AdImageContainer = ({
@@ -22,7 +21,6 @@ const AdImageContainer = ({
   }, [declareImageType]);
 
   return (
-    <Box>
       <img
         src={displayedImageURL}
         alt={altText}
@@ -31,10 +29,9 @@ const AdImageContainer = ({
           objectFit: 'cover',
           borderRadius: 'inherit',
           height: '100%',
-          maxHeight: 500,
+          maxHeight: 550,
         }}
       />
-    </Box>
   );
 };
 
