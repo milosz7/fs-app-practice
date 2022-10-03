@@ -8,6 +8,7 @@ import session from 'express-session';
 import mongoose from 'mongoose';
 import adsRoutes from './routes/ads.routes'; 
 import multer from 'multer';
+import profileRoutes from './routes/profile.routes';
 
 const app = express();
 
@@ -37,7 +38,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/auth', authRoutes);
-app.use('/api', adsRoutes)
+app.use('/api', adsRoutes);
+app.use('/api', profileRoutes);
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(express.static(path.join(__dirname, '/public')))
