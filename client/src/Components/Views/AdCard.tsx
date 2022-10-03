@@ -5,44 +5,56 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import declareImgPath from '../../utils/declareImgPath';
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom';
 import mongoose from 'mongoose';
+import { useTheme } from '@mui/system';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useNavigate } from 'react-router-dom';
 
 const AdCard = ({
   image,
   title,
   location,
-  id
+  id,
 }: {
   image: string;
   title: string;
   location: string;
-  id: mongoose.Types.ObjectId
+  id: mongoose.Types.ObjectId;
 }) => {
-
   const imagePath = declareImgPath(image);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('sm'));
+  const navigate = useNavigate();
 
   return (
-    <Card  sx={{ height: '100%', display: 'flex', flexFlow: 'column nowrap', alignItems: 'flex-start'}}>
+    <Card
+      onClick={() => navigate(`/ads/${id}`)}
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: matches ? 'row' : 'column',
+        flexWrap: 'nowrap',
+        alignItems: 'flex-start',
+        cursor: 'pointer',
+      }}
+    >
       <CardMedia
-        height={300}
+        height={200}
         component="img"
         alt={title}
         image={imagePath}
+        sx={{ objectFit: 'cover', ...(matches ? { maxWidth: 250 } : {}) }}
       />
       <CardContent>
         <Typography fontWeight={700} variant="h6">
           {title}
         </Typography>
-        <Typography sx={{mt: 1}} color="gray" variant="body2">
+        <Typography sx={{ mt: 1 }} color="gray" variant="body2">
           {location}
         </Typography>
       </CardContent>
-      <CardActions sx={{mt: 'auto'}}>
-        <Button component={RouterLink} to={'ads/' + id} color="primary" variant="text">
-          Details
-        </Button>
-      </CardActions>
+      <CardActions sx={{ mt: 'auto' }}></CardActions>
     </Card>
   );
 };
