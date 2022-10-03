@@ -58,7 +58,7 @@ const router = createBrowserRouter(
           </RouteForUnauthorized>
         }
       />
-      <Route path="profile/:name" element={<Profile />} />
+      <Route path="profile/:id" element={<Profile />} />
       <Route path="*" element={<NotFound />} />
     </Route>
   )
